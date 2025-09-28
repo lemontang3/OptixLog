@@ -65,31 +65,30 @@ pip install http://optixlog.com/optixlog-0.0.1-py3-none-any.whl
 This repository contains **85+ comprehensive examples** covering a wide range of photonic simulations with OptixLog integration.
 
 ### 🚀 **Quick Start Examples**
-- [`01_quick_start.py`](examples/01_quick_start.py) - Basic OptixLog integration and logging
+- [`quick_start.py`](examples/quick_start.py) - Basic OptixLog integration and logging
 
 ### 🔬 **Basic Meep Simulations**
-- [`02_straight_waveguide.py`](examples/02_straight_waveguide.py) - Simple straight waveguide with field visualization
-- [`04_absorbed_1d.py`](examples/04_absorbed_1d.py) - 1D absorption simulation in aluminum
-- [`05_bend_flux.py`](examples/05_bend_flux.py) - 90-degree waveguide bend transmission analysis
-- [`07_binary_grating_phasemap.py`](examples/07_binary_grating_phasemap.py) - Binary grating phase map generation
-- [`08_binary_grating_analysis.py`](examples/08_binary_grating_analysis.py) - Advanced binary grating diffraction analysis
-- [`10_mie_sphere_3d.py`](examples/10_mie_sphere_3d.py) - 3D Mie scattering from nanospheres
-- [`12_ring_resonator.py`](examples/12_ring_resonator.py) - Ring resonator mode calculation and analysis
+- [`straight_waveguide.py`](examples/straight_waveguide.py) - Simple straight waveguide with field visualization
+- [`absorbed_1d.py`](examples/absorbed_1d.py) - 1D absorption simulation in aluminum
+- [`bend_flux.py`](examples/bend_flux.py) - 90-degree waveguide bend transmission analysis
+- [`binary_grating_phasemap.py`](examples/binary_grating_phasemap.py) - Binary grating phase map generation
+- [`binary_grating_analysis.py`](examples/binary_grating_analysis.py) - Advanced binary grating diffraction analysis
+- [`ring_resonator.py`](examples/ring_resonator.py) - Ring resonator mode calculation and analysis
 
 ### 🌐 **Waveguide & Transmission Examples**
-- [`39_waveguide_crossing.py`](examples/39_waveguide_crossing.py) - Waveguide crossing analysis
-- [`67_coupler.py`](examples/67_coupler.py) - Optical coupler simulation
-- [`86_bent_waveguide.py`](examples/86_bent_waveguide.py) - Bent waveguide analysis
-- [`87_ring_cyl.py`](examples/87_ring_cyl.py) - Cylindrical ring resonator
-- [`90_ring_gds.py`](examples/90_ring_gds.py) - Ring resonator with GDS integration
+- [`waveguide_crossing.py`](examples/waveguide_crossing.py) - Waveguide crossing analysis
+- [`coupler.py`](examples/coupler.py) - Optical coupler simulation
+- [`bent_waveguide.py`](examples/bent_waveguide.py) - Bent waveguide analysis
+- [`ring_cyl.py`](examples/ring_cyl.py) - Cylindrical ring resonator
+- [`ring_gds.py`](examples/ring_gds.py) - Ring resonator with GDS integration
 
 ### 📊 **Grating & Diffraction Examples**
-- [`26_zone_plate.py`](examples/26_zone_plate.py) - Zone plate focusing analysis
-- [`36_polarization_grating.py`](examples/36_polarization_grating.py) - Polarization grating simulation
-- [`37_binary_grating_oblique.py`](examples/37_binary_grating_oblique.py) - Oblique binary grating
-- [`63_binary_grating_n2f.py`](examples/63_binary_grating_n2f.py) - Near-to-far field analysis
-- [`77_grating2d_triangular_lattice.py`](examples/77_grating2d_triangular_lattice.py) - 2D triangular lattice grating
-- [`82_binary_grating_phasemap.py`](examples/82_binary_grating_phasemap.py) - Binary grating phase map analysis
+- [`zone_plate.py`](examples/zone_plate.py) - Zone plate focusing analysis
+- [`polarization_grating.py`](examples/polarization_grating.py) - Polarization grating simulation
+- [`binary_grating_oblique.py`](examples/binary_grating_oblique.py) - Oblique binary grating
+- [`binary_grating_n2f.py`](examples/binary_grating_n2f.py) - Near-to-far field analysis
+- [`grating2d_triangular_lattice.py`](examples/grating2d_triangular_lattice.py) - 2D triangular lattice grating
+- [`binary_grating_phasemap_advanced.py`](examples/binary_grating_phasemap_advanced.py) - Advanced binary grating phase map analysis
 
 ### 🔬 **Scattering & Radiation Examples**
 - [`22_cherenkov_radiation.py`](examples/22_cherenkov_radiation.py) - Cherenkov radiation analysis
