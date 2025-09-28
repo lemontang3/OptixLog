@@ -197,7 +197,7 @@ If you need help:
 
 ## 📄 License
 
-By contributing, you agree that your contributions will be licensed under the same MIT License that covers the project.
+By contributing, you agree that your contributions will be available for educational and example purposes.
 
 ---
 
