@@ -1,0 +1,35 @@
+# OptixLog Examples Requirements
+# Core dependencies for photonic simulations with OptixLog
+
+# OptixLog SDK
+# Install from: pip install http://optixlog.com/optixlog-0.0.1-py3-none-any.whl
+
+# Scientific computing
+numpy>=1.21.0
+scipy>=1.7.0
+matplotlib>=3.5.0
+
+# Meep FDTD (install separately based on your platform)
+# macOS: brew install meep
+# Ubuntu: sudo apt-get install meep meep-dev
+# Or build from source: https://meep.readthedocs.io/en/latest/Installation/
+
+# Optional: Additional simulation frameworks
+# tidy3d>=1.8.0  # Coming soon
+# lumopt>=1.0.0  # Coming soon
+
+# Data handling
+pandas>=1.3.0
+h5py>=3.6.0
+
+# Image processing (for artifact uploads)
+Pillow>=8.3.0
+
+# Utilities
+tqdm>=4.62.0  # Progress bars
+click>=8.0.0  # CLI interfaces
+
+# Development dependencies
+pytest>=6.2.0
+black>=21.0.0
+flake8>=4.0.0
