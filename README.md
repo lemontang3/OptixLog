@@ -64,6 +64,10 @@ pip install http://optixlog.com/optixlog-0.0.1-py3-none-any.whl
 
 This repository contains **85+ comprehensive examples** covering a wide range of photonic simulations with OptixLog integration.
 
+[![GitHub](https://img.shields.io/badge/GitHub-View%20Examples-blue?logo=github)](https://github.com/lemontang3/OptixLog)
+[![GitHub Stars](https://img.shields.io/github/stars/lemontang3/OptixLog?style=social)](https://github.com/lemontang3/OptixLog/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/lemontang3/OptixLog?style=social)](https://github.com/lemontang3/OptixLog/network/members)
+
 ### 🚀 **Quick Start Examples**
 - [`quick_start.py`](examples/quick_start.py) - Basic OptixLog integration and logging
 
