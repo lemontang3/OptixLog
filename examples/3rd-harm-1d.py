@@ -17,33 +17,44 @@ api_key = os.getenv("OPTIX_API_KEY", "proj_YOUR_API_KEY_HERE")
 api_url = os.getenv("OPTIX_API_URL", "https://coupler.onrender.com")
 project_name = os.getenv("OPTIX_PROJECT", "MeepExamples")
 
-print(f"🚀 Initializing OptixLog client for project: {project_name}")
-
-try:
-    # Initialize OptixLog client
-    client = optixlog.init(
-        api_key=api_key,
-        api_url=api_url,
-        project=project_name,
-        run_name="3rd-harm-1d_simulation",
-        config={
-            "simulation_type": "general",
-            "description": "Electromagnetic simulation",
-            "framework": "meep",
-            "original_file": "3rd-harm-1d.py"
-        },
-        create_project_if_not_exists=True
-    )
-    print(f"✅ OptixLog client initialized. Run ID: {client.run_id}")
-    print(f"🔗 View run at: https://optixlog.com/runs/{client.run_id}")
-
-
-    # Log simulation parameters
-    client.log(step=0,
-        resolution=25,
-        fcen=1,
-        dpml=1.0
-    )
+def main():
+    """Main simulation function with OptixLog integration"""
+    
+    # Check if this is the master process
+    if not optixlog.is_master_process():
+        mpi_info = optixlog.get_mpi_info()
+        print(f"Worker process (rank {mpi_info[1]}/{mpi_info[2]}) - skipping simulation")
+        return
+    
+    print(f"🚀 Initializing OptixLog client for project: {project_name}")
+    
+    try:
+        # Initialize OptixLog client
+        client = optixlog.init(
+            api_key=api_key,
+            api_url=api_url,
+            project=project_name,
+            run_name="3rd-harm-1d_simulation",
+            config={
+                "simulation_type": "general",
+                "description": "Electromagnetic simulation",
+                "framework": "meep",
+                "original_file": "3rd-harm-1d.py"
+            },
+            create_project_if_not_exists=True
+        )
+        print(f"✅ OptixLog client initialized. Run ID: {client.run_id}")
+        print(f"🔗 View run at: https://optixlog.com/runs/{client.run_id}")
+        
+        # Log simulation parameters
+        client.log(step=0,
+            resolution=25,
+            fcen=1,
+            dpml=1.0
+        )
+    except Exception as e:
+        print(f"❌ Failed to initialize OptixLog: {e}")
+        client = None
 
 """
 1d simulation of a plane wave propagating through a Kerr medium
@@ -53,7 +64,7 @@ ref: https://meep.readthedocs.io/en/latest/Python_Tutorials/Third_Harmonic_Gener
 """
 
 from typing import Tuple, List, Union
-matplotlib.use("agg")
+
 def third_harmonic_generation(
     k: float, amp: float = 1.0, nfreq: int = 10, flux_spectrum: bool = True
 ) -> Union[Tuple[List[float], List[float]], Tuple[float, float]]:
@@ -126,10 +137,11 @@ def third_harmonic_generation(
         trans1 = sim.add_flux(fcen, 0, 1, mp.FluxRegion(mon_pt))
         trans3 = sim.add_flux(3 * fcen, 0, 1, mp.FluxRegion(mon_pt))
 
-    sim.run(until_after_sources=mp.stop_when_fields_decayed(50, mp.Ex, mon_pt, 1e-6)
+    sim.run(until_after_sources=mp.stop_when_fields_decayed(50, mp.Ex, mon_pt, 1e-6))
     
     # Log simulation completion
-    client.log(step=1, simulation_completed=True))
+    if client:
+        client.log(step=1, simulation_completed=True)
 
     if flux_spectrum:
         freqs = mp.get_flux_freqs(trans)
@@ -143,7 +155,6 @@ def third_harmonic_generation(
         return mp.get_fluxes(trans1)[0], mp.get_fluxes(trans3)[0]
 
 
-if __name__ == "__main__":
     # Part 1: plot transmitted power spectrum for several values of χ(3).
     nfreq = 400
     logk = range(-3, 1)
@@ -187,15 +198,18 @@ if __name__ == "__main__":
     ax.legend()
     ax.grid(True, "both")
     fig.savefig("transmittance_vs_chi3.png", dpi=150, bbox_inches="tight")
-except ValueError as e:
-    print(f"\n❌ OptixLog Error: {{e}}")
-    print("Please ensure your API key and URL are correct.")
-except Exception as e:
-    print(f"\n❌ Simulation Error: {{e}}")
 
-finally:
-    # Clean up generated files
-    import glob
-    for file_path in glob.glob("*.png") + glob.glob("*.csv") + glob.glob("*.txt"):
-        if os.path.exists(file_path):
-            os.remove(file_path)
+if __name__ == "__main__":
+    try:
+        main()
+    except ValueError as e:
+        print(f"\n❌ OptixLog Error: {e}")
+        print("Please ensure your API key and URL are correct.")
+    except Exception as e:
+        print(f"\n❌ Simulation Error: {e}")
+    finally:
+        # Clean up generated files
+        import glob
+        for file_path in glob.glob("*.png") + glob.glob("*.csv") + glob.glob("*.txt"):
+            if os.path.exists(file_path):
+                os.remove(file_path)
