@@ -25,6 +25,12 @@ import os
 def main():
     """Main simulation function with OptixLog integration"""
     
+    # Check if this is the master process
+    if not optixlog.is_master_process():
+        mpi_info = optixlog.get_mpi_info()
+        print(f"Worker process (rank {mpi_info[1]}/{mpi_info[2]}) - skipping simulation")
+        return
+    
     print("🚀 Starting OptixLog Quick Start Example")
     
     # Initialize OptixLog client
@@ -106,7 +112,7 @@ def main():
     try:
         client.log_file(
             plot_filename, 
-            "results/quick_start_results.png", 
+            "quick_start_results.png", 
             "image/png"
         )
         print(f"✅ Uploaded plot: {plot_filename}")
@@ -122,7 +128,7 @@ def main():
         
         client.log_file(
             data_filename, 
-            "data/quick_start_data.csv", 
+            "quick_start_data.csv", 
             "text/csv"
         )
         print(f"✅ Uploaded data: {data_filename}")

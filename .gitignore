@@ -165,3 +165,5 @@ Thumbs.db
 # Local configuration
 config.local.py
 .env.local
+
+

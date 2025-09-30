@@ -55,7 +55,7 @@ def main(args):
         }
 
         client = optixlog.init(
-            project="Examples",
+            project="MeepExamples",
             run_name=f"absorbed_1d_al_{'pml' if args.pml else 'absorber'}",
             config=config,
             create_project_if_not_exists=True
