@@ -185,7 +185,7 @@ Environment Variables:
         client = optixlog.init(
             api_key=os.getenv("OPTIX_API_KEY", "proj_rLe5i6YI6Ozgl8W8Y5G9"),
             api_url=os.getenv("OPTIX_API_URL", "https://coupler.onrender.com"),
-            project="Examples",
+            project="Binary Grating Phase Map",
             run_name=f"binary_grating_gp{args.gp}_gh{args.gh}_{'oddz' if args.oddz else 'evenz'}",
             config=config,
             create_project_if_not_exists=True
@@ -311,26 +311,32 @@ Environment Variables:
         )
 
         # Log the phase map visualization
-        from PIL import Image
-        phase_img = Image.open("binary_grating_phasemap.png")
-        client.log_image("binary_grating_phasemap", phase_img,
-            meta={
-                "stage": "results",
-                "type": "phase_map",
-                "grating_period": args.gp,
-                "grating_height": args.gh,
-                "odd_z_symmetry": args.oddz,
-                "wavelength_range": [wvl_min, wvl_max],
-                "duty_cycle_range": [0.1, 0.9],
-                "max_transmittance": float(np.max(mode_tran)),
-                "phase_range": float(np.max(mode_phase) - np.min(mode_phase))
-            })
-
-        # Clean up temporary file
-        os.remove("binary_grating_phasemap.png")
+        try:
+            from PIL import Image
+            if os.path.exists("binary_grating_phasemap.png"):
+                phase_img = Image.open("binary_grating_phasemap.png")
+                client.log_image("binary_grating_phasemap", phase_img,
+                    meta={
+                        "stage": "results",
+                        "type": "phase_map",
+                        "grating_period": args.gp,
+                        "grating_height": args.gh,
+                        "odd_z_symmetry": args.oddz,
+                        "wavelength_range": [wvl_min, wvl_max],
+                        "duty_cycle_range": [0.1, 0.9],
+                        "max_transmittance": float(np.max(mode_tran)),
+                        "phase_range": float(np.max(mode_phase) - np.min(mode_phase))
+                    })
+                print(f"[OptixLog] Logged visualization to run {client.run_id}")
+                
+                # Clean up temporary file
+                os.remove("binary_grating_phasemap.png")
+            else:
+                print(f"[Warning] Visualization file not found, skipping image log")
+        except Exception as e:
+            print(f"[Warning] Could not log visualization: {e}")
 
         print(f"[OptixLog] Logged simulation results to run {client.run_id}")
-        print(f"[OptixLog] Logged visualization to run {client.run_id}")
         print(f"[OptixLog] View results at: https://optixlog.com/runs/{client.run_id}")
     else:
         print("[Info] Simulation completed successfully (without OptixLog)")
