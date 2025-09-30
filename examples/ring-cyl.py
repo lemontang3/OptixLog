@@ -19,8 +19,12 @@ project_name = os.getenv("OPTIX_PROJECT", "MeepExamples")
 
 print(f"🚀 Initializing OptixLog client for project: {project_name}")
 
+# Calculating 2d ring-resonator modes using cylindrical coordinates,
+# from the Meep tutorial.
+import argparse
+
+# Initialize OptixLog client
 try:
-    # Initialize OptixLog client
     client = optixlog.init(
         api_key=api_key,
         api_url=api_url,
@@ -36,22 +40,16 @@ try:
     )
     print(f"✅ OptixLog client initialized. Run ID: {client.run_id}")
     print(f"🔗 View run at: https://optixlog.com/runs/{client.run_id}")
-
-
-    # Log simulation parameters
-    client.log(step=0,
-        resolution=20,
-        w=1,
-        r=1,
-        pad=4,
-        dpml=32
-    )
-
-# Calculating 2d ring-resonator modes using cylindrical coordinates,
-# from the Meep tutorial.
-import argparse
+except Exception as e:
+    print(f"❌ Failed to initialize OptixLog: {e}")
+    client = None
 
 def main(args):
+    # Check if this is the master process
+    if not optixlog.is_master_process():
+        mpi_info = optixlog.get_mpi_info()
+        print(f"Worker process (rank {mpi_info[1]}/{mpi_info[2]}) - skipping simulation")
+        return
 
     n = 3.4  # index of waveguide
     w = 1  # width of waveguide
@@ -77,6 +75,18 @@ def main(args):
 
     pml_layers = [mp.PML(dpml)]
     resolution = 20
+
+    # Log simulation parameters
+    if client:
+        client.log(step=0,
+            resolution=resolution,
+            w=w,
+            r=r,
+            pad=pad,
+            dpml=dpml,
+            m=m,
+            fcen=args.fcen
+        )
 
     # If we don't want to excite a specific mode symmetry, we can just
     # put a single point source at some arbitrary place, pointing in some
@@ -105,12 +115,13 @@ def main(args):
     )
 
     sim.run(
-        mp.after_sources(mp.Harminv(mp.Ez, mp.Vector3(r + 0.1)
-    
-    # Log simulation completion
-    client.log(step=1, simulation_completed=True), fcen, df)),
+        mp.after_sources(mp.Harminv(mp.Ez, mp.Vector3(r + 0.1), fcen, df)),
         until_after_sources=200,
     )
+    
+    # Log simulation completion
+    if client:
+        client.log(step=1, simulation_completed=True)
 
     # Output fields for one period at the end.  (If we output
     # at a single time, we might accidentally catch the Ez field when it is
@@ -119,40 +130,41 @@ def main(args):
     # instead of from 0 to sr.
     sim.run(
         mp.in_volume(
-            mp.Volume(center=mp.Vector3()
-    
-    # Log simulation completion
-    client.log(step=1, simulation_completed=True), size=mp.Vector3(2 * sr)),
+            mp.Volume(center=mp.Vector3(), size=mp.Vector3(2 * sr)),
             mp.at_beginning(mp.output_epsilon),
             mp.to_appended("ez", mp.at_every(1 / fcen / 20, mp.output_efield_z)),
         ),
         until=1 / fcen,
     )
+    
+    # Log simulation completion
+    if client:
+        client.log(step=1, simulation_completed=True)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-fcen", type=float, default=0.15, help="pulse center frequency"
-    )
-    parser.add_argument("-df", type=float, default=0.1, help="pulse frequency width")
-    parser.add_argument(
-        "-m",
-        type=int,
-        default=3,
-        help="phi (angular) dependence of the fields given by exp(i m phi)",
-    )
-    args = parser.parse_args()
-    main(args)
-except ValueError as e:
-    print(f"\n❌ OptixLog Error: {{e}}")
-    print("Please ensure your API key and URL are correct.")
-except Exception as e:
-    print(f"\n❌ Simulation Error: {{e}}")
-
-finally:
-    # Clean up generated files
-    import glob
-    for file_path in glob.glob("*.png") + glob.glob("*.csv") + glob.glob("*.txt"):
-        if os.path.exists(file_path):
-            os.remove(file_path)
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            "-fcen", type=float, default=0.15, help="pulse center frequency"
+        )
+        parser.add_argument("-df", type=float, default=0.1, help="pulse frequency width")
+        parser.add_argument(
+            "-m",
+            type=int,
+            default=3,
+            help="phi (angular) dependence of the fields given by exp(i m phi)",
+        )
+        args = parser.parse_args()
+        main(args)
+    except ValueError as e:
+        print(f"\n❌ OptixLog Error: {e}")
+        print("Please ensure your API key and URL are correct.")
+    except Exception as e:
+        print(f"\n❌ Simulation Error: {e}")
+    finally:
+        # Clean up generated files
+        import glob
+        for file_path in glob.glob("*.png") + glob.glob("*.csv") + glob.glob("*.txt"):
+            if os.path.exists(file_path):
+                os.remove(file_path)
