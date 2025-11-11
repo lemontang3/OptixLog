@@ -32,7 +32,7 @@ import csv
 from io import BytesIO
 
 # Set your OptixLog credentials
-API_KEY = os.getenv("s")  # Replace with your actual API key
+API_KEY = os.getenv("OPTIX_API_KEY","proj_EwHyn3ysq9iLo5N1FCCH")  # Replace with your actual API key
 API_URL = os.getenv("OPTIX_API_URL", "http://coupler.onrender.com")
 PROJECT_NAME = "Tutorial"
 
@@ -685,4 +685,5 @@ print("\n💡 Check your OptixLog dashboard to see all the logged data!")
 print("\n" + "=" * 60)
 print("✓ All tutorials completed successfully!")
 print("=" * 60)
+
 
