@@ -292,7 +292,8 @@ try:
     plt.tight_layout(pad=0.5)
 
     # Log the plot to OptixLog
-    # client.log(step=2, plot=fig, plot_name="grating_diffraction_analysis")
+    fig.savefig("binary_grating_n2f.png", dpi=150, bbox_inches="tight")
+    client.log_file("grating_diffraction_analysis", "binary_grating_n2f.png", "image/png", meta={"description": "Binary grating diffraction analysis"})
     plt.show()
 
     # Log simulation results
