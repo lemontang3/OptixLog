@@ -38,7 +38,6 @@ try:
     print(f"✅ OptixLog client initialized. Run ID: {client.run_id}")
     print(f"🔗 View run at: https://optixlog.com/runs/{client.run_id}")
 
-
     # Log simulation parameters
     client.log(step=0,
         resolution=25,
@@ -247,11 +246,25 @@ try:
 
     rel_enh = np.absolute(ff_unitcell["Ez"]) ** 2 / np.absolute(ff_source["Ez"]) ** 2
 
-    plt.figure(dpi=150)
+    # FIX: Ensure the arrays have compatible shapes for plotting
+    # pcolormesh expects the data array to have shape (y_dim, x_dim)
+    # where y_dim = len(angles) and x_dim = len(wvl)
+
+    fig = plt.figure(dpi=150, figsize=(12, 5))
 
     plt.subplot(1, 2, 1)
-    # Transpose rel_enh so dimensions match (wavelengths, angles)
-    plt.pcolormesh(wvl, angles, rel_enh.T, cmap="Blues", shading='gouraud')
+    # Check and reshape rel_enh if necessary
+    if rel_enh.shape != (len(freqs), ff_npts):
+        print(f"Warning: Reshaping rel_enh from {rel_enh.shape} to ({len(freqs)}, {ff_npts})")
+        # If rel_enh is transposed, fix it
+        if rel_enh.shape == (ff_npts, len(freqs)):
+            rel_enh = rel_enh.T
+
+    # Create meshgrid for proper pcolormesh plotting
+    WVL, ANGLES = np.meshgrid(wvl, angles)
+
+    # pcolormesh expects data with shape (y, x) = (angles, wavelengths)
+    plt.pcolormesh(WVL, ANGLES, rel_enh.T, cmap="Blues", shading='gouraud')
     plt.axis([wvl_min, wvl_max, 0, ff_angle])
     plt.xlabel("wavelength (μm)")
     plt.ylabel("angle (degrees)")
@@ -261,7 +274,13 @@ try:
     plt.title("far-field spectra")
 
     plt.subplot(1, 2, 2)
-    plt.plot(angles, rel_enh[:, idx_slice], "bo-")
+    # For the line plot, ensure we're using the correct slice
+    if rel_enh.shape[0] == len(freqs) and rel_enh.shape[1] == ff_npts:
+        plt.plot(angles, rel_enh[idx_slice, :], "bo-")
+    else:
+        # If shape is transposed, adjust accordingly
+        plt.plot(angles, rel_enh[:, idx_slice], "bo-")
+
     plt.xlim(0, ff_angle)
     plt.ylim(0)
     plt.xticks([t for t in range(0, ff_angle + 1, 10)])
@@ -271,12 +290,27 @@ try:
     plt.title(f"f.-f. spectra @ λ = {wvl_slice:.1} μm")
 
     plt.tight_layout(pad=0.5)
+
+    # Log the plot to OptixLog
+    # client.log(step=2, plot=fig, plot_name="grating_diffraction_analysis")
     plt.show()
+
+    # Log simulation results
+    client.log(step=3,
+               simulation_completed=True,
+               error_value=float(norm_err),
+               wavelengths=wvl.tolist(),
+               angles=angles)
+
+    print(f"✅ Simulation completed successfully with error: {norm_err}")
+
 except ValueError as e:
     print(f"\n❌ OptixLog Error: {e}")
     print("Please ensure your API key and URL are correct.")
 except Exception as e:
     print(f"\n❌ Simulation Error: {e}")
+    import traceback
+    traceback.print_exc()
 
 finally:
     # Clean up generated files
