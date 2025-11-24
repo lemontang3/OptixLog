@@ -15,15 +15,19 @@ This repository contains detailed, production-ready examples demonstrating how t
 git clone https://github.com/lemontang3/OptixLog.git
 cd OptixLog
 
-# Install OptixLog
-pip install http://optixlog.com/optixlog-0.0.1-py3-none-any.whl
+# Install OptixLog SDK v0.0.4
+pip install optixlog
+# Or install with rich for colored output (recommended):
+pip install optixlog[full]
 
 # Set your API key
 export OPTIX_API_KEY="proj_your_api_key_here"
 
 # Run your first example
-python examples/01_quick_start.py
+python demo.py
 ```
+
+**New in v0.0.4:** 80% less boilerplate code with context managers and convenience helpers!
 
 ## 📋 Table of Contents
 
@@ -187,73 +191,81 @@ This repository contains **85+ comprehensive examples** covering a wide range of
 
 ## 🎮 Getting Started
 
-### 1. **Basic Integration**
+### 1. **Basic Integration** (SDK v0.0.4)
 
 ```python
 import optixlog
 import meep as mp
 import numpy as np
 
-# Initialize OptixLog
-client = optixlog.init(
-    run_name="my_first_simulation",
-    config={"resolution": 30, "material": "silicon"}
-)
-
-# Your simulation code
-sim = mp.Simulation(...)
-
-# Log metrics during simulation
-for step in range(100):
-    sim.run(until=1)
-    field = sim.get_array(...)
-    power = float(np.mean(np.abs(field)**2))
-    client.log(step=step, power=power)
-
-# Upload results
-client.log_file("results.png", "field_plot.png", "image/png")
+# Use context manager (auto-cleanup!)
+with optixlog.run("my_first_simulation", 
+                   config={"resolution": 30, "material": "silicon"}) as client:
+    
+    # Your simulation code
+    sim = mp.Simulation(...)
+    
+    # Log metrics during simulation
+    for step in range(100):
+        sim.run(until=1)
+        field = sim.get_array(...)
+        power = float(np.mean(np.abs(field)**2))
+        
+        # Get return values!
+        result = client.log(step=step, power=power)
+        if result and step % 10 == 0:
+            print(f"✓ Step {step}: logged successfully")
+    
+    # Zero-boilerplate plot logging!
+    client.log_array_as_image("field_plot", field, cmap='RdBu')
 ```
 
-### 2. **Parameter Sweeps**
+### 2. **Parameter Sweeps** (SDK v0.0.4)
 
 ```python
 # Sweep over multiple parameters
 wavelengths = np.linspace(0.4, 0.7, 20)
 for wavelength in wavelengths:
-    client = optixlog.init(
-        run_name=f"sweep_{wavelength:.2f}",
-        config={"wavelength": wavelength}
-    )
-    
-    # Run simulation for this wavelength
-    # ... simulation code ...
-    
-    client.log(transmission=transmission, reflection=reflection)
+    # Context manager per sweep
+    with optixlog.run(f"sweep_{wavelength:.2f}",
+                       config={"wavelength": wavelength}) as client:
+        
+        # Run simulation for this wavelength
+        # ... simulation code ...
+        
+        # Log with return values
+        result = client.log(transmission=transmission, reflection=reflection)
+        print(f"✓ Logged sweep at λ={wavelength:.2f}: {result.url}")
+        
+        # Use convenience helpers
+        client.log_plot("spectrum", frequencies, transmission, 
+                        title=f"Transmission (λ={wavelength:.2f})")
 ```
 
-### 3. **Artifact Management**
+### 3. **Artifact Management** (SDK v0.0.4 - 80% Less Code!)
 
 ```python
-# Save and upload plots
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(10, 6))
-plt.plot(frequencies, transmission)
-plt.xlabel('Frequency')
-plt.ylabel('Transmission')
-plt.savefig('transmission_spectrum.png')
-
-# Upload to OptixLog
-client.log_file(
-    "transmission_spectrum.png", 
-    "results/transmission_spectrum.png", 
-    "image/png"
-)
-
-# Upload data files
-np.savetxt('data.csv', data, delimiter=',')
-client.log_file("data.csv", "results/data.csv", "text/csv")
+with optixlog.run("artifact_demo") as client:
+    # Create plot
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(frequencies, transmission)
+    ax.set_xlabel('Frequency')
+    ax.set_ylabel('Transmission')
+    
+    # ONE LINE! No manual save/upload/cleanup!
+    result = client.log_matplotlib("transmission_spectrum", fig)
+    print(f"✓ Plot uploaded: {result.url}")
+    
+    # Auto-detects content type!
+    client.log_file("data", "results/data.csv")
+    
+    # Or use helper to create plot from data
+    client.log_plot("quick_plot", x_data, y_data, title="My Plot")
 ```
+
+**Boilerplate reduced by 80%!** No more manual `savefig()` → `PIL.Image` → `log_image()` → `os.remove()`.
 
 ## 📊 Key Features
 
