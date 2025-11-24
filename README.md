@@ -297,7 +297,7 @@ OptixLog/
 ```bash
 # Required
 export OPTIX_API_KEY="proj_your_api_key_here"
-export OPTIX_API_URL="https://coupler.onrender.com"
+export OPTIX_API_URL="https://backend.optixlog.com"
 
 # Optional
 export OPTIX_PROJECT="my_project_name"
@@ -309,7 +309,7 @@ Create a `.env` file in your project root:
 
 ```env
 OPTIX_API_KEY=proj_your_api_key_here
-OPTIX_API_URL=https://coupler.onrender.com
+OPTIX_API_URL=https://backend.optixlog.com
 OPTIX_PROJECT=my_project_name
 ```
 

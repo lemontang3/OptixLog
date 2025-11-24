@@ -14,7 +14,7 @@ import numpy as np
 
 # OptixLog Configuration
 api_key = os.getenv("OPTIX_API_KEY", "proj_YOUR_API_KEY_HERE")
-api_url = os.getenv("OPTIX_API_URL", "https://coupler.onrender.com")
+api_url = os.getenv("OPTIX_API_URL", "https://backend.optixlog.com")
 project_name = os.getenv("OPTIX_PROJECT", "MeepExamples")
 
 print(f"🚀 Initializing OptixLog client for project: {project_name}")

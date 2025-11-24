@@ -33,7 +33,7 @@ from io import BytesIO
 
 # Set your OptixLog credentials
 API_KEY = os.getenv("s")  # Replace with your actual API key
-API_URL = os.getenv("OPTIX_API_URL", "http://coupler.onrender.com")
+API_URL = os.getenv("OPTIX_API_URL", "http://backend.optixlog.com")
 PROJECT_NAME = "Tutorial"
 
 print("✓ Imports successful!")
