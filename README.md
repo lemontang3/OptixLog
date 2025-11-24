@@ -15,10 +15,8 @@ This repository contains detailed, production-ready examples demonstrating how t
 git clone https://github.com/lemontang3/OptixLog.git
 cd OptixLog
 
-# Install OptixLog SDK v0.0.4
+# Install OptixLog SDK
 pip install optixlog
-# Or install with rich for colored output (recommended):
-pip install optixlog[full]
 
 # Set your API key
 export OPTIX_API_KEY="proj_your_api_key_here"
@@ -26,8 +24,6 @@ export OPTIX_API_KEY="proj_your_api_key_here"
 # Run your first example
 python demo.py
 ```
-
-**New in v0.0.4:** 80% less boilerplate code with context managers and convenience helpers!
 
 ## 📋 Table of Contents
 
@@ -73,100 +69,100 @@ This repository contains **85+ comprehensive examples** covering a wide range of
 [![GitHub Forks](https://img.shields.io/github/forks/lemontang3/OptixLog?style=social)](https://github.com/lemontang3/OptixLog/network/members)
 
 ### 🚀 **Quick Start Examples**
-- [`quick_start.py`](examples/quick_start.py) - Basic OptixLog integration and logging
+- [`quick_start.py`](Meep%20Examples/quick_start.py) - Basic OptixLog integration and logging
 
 ### 🔬 **Basic Meep Simulations**
-- [`straight_waveguide.py`](examples/straight_waveguide.py) - Simple straight waveguide with field visualization
-- [`absorbed_1d.py`](examples/absorbed_1d.py) - 1D absorption simulation in aluminum
-- [`bend_flux.py`](examples/bend_flux.py) - 90-degree waveguide bend transmission analysis
-- [`binary_grating_phasemap.py`](examples/binary_grating_phasemap.py) - Binary grating phase map generation
-- [`binary_grating_analysis.py`](examples/binary_grating_analysis.py) - Advanced binary grating diffraction analysis
-- [`ring_resonator.py`](examples/ring_resonator.py) - Ring resonator mode calculation and analysis
+- [`straight_waveguide.py`](Meep%20Examples/straight_waveguide.py) - Simple straight waveguide with field visualization
+- [`absorbed_1d.py`](Meep%20Examples/absorbed_1d.py) - 1D absorption simulation in aluminum
+- [`bend_flux.py`](Meep%20Examples/bend_flux.py) - 90-degree waveguide bend transmission analysis
+- [`binary_grating_phasemap.py`](Meep%20Examples/binary_grating_phasemap.py) - Binary grating phase map generation
+- [`binary_grating_analysis.py`](Meep%20Examples/binary_grating_analysis.py) - Advanced binary grating diffraction analysis
+- [`ring_resonator.py`](Meep%20Examples/ring_resonator.py) - Ring resonator mode calculation and analysis
 
 ### 🌐 **Waveguide & Transmission Examples**
-- [`waveguide_crossing.py`](examples/waveguide_crossing.py) - Waveguide crossing analysis
-- [`coupler.py`](examples/coupler.py) - Optical coupler simulation
-- [`bent_waveguide.py`](examples/bent_waveguide.py) - Bent waveguide analysis
-- [`ring_cyl.py`](examples/ring_cyl.py) - Cylindrical ring resonator
-- [`ring_gds.py`](examples/ring_gds.py) - Ring resonator with GDS integration
+- [`waveguide_crossing.py`](Meep%20Examples/waveguide_crossing.py) - Waveguide crossing analysis
+- [`coupler.py`](Meep%20Examples/coupler.py) - Optical coupler simulation
+- [`bent-waveguide.py`](Meep%20Examples/bent-waveguide.py) - Bent waveguide analysis
+- [`ring-cyl.py`](Meep%20Examples/ring-cyl.py) - Cylindrical ring resonator
+- [`ring_gds.py`](Meep%20Examples/ring_gds.py) - Ring resonator with GDS integration
 
 ### 📊 **Grating & Diffraction Examples**
-- [`zone_plate.py`](examples/zone_plate.py) - Zone plate focusing analysis
-- [`polarization_grating.py`](examples/polarization_grating.py) - Polarization grating simulation
-- [`binary_grating_oblique.py`](examples/binary_grating_oblique.py) - Oblique binary grating
-- [`binary_grating_n2f.py`](examples/binary_grating_n2f.py) - Near-to-far field analysis
-- [`grating2d_triangular_lattice.py`](examples/grating2d_triangular_lattice.py) - 2D triangular lattice grating
-- [`binary_grating_phasemap_advanced.py`](examples/binary_grating_phasemap_advanced.py) - Advanced binary grating phase map analysis
+- [`zone_plate.py`](Meep%20Examples/zone_plate.py) - Zone plate focusing analysis
+- [`polarization_grating.py`](Meep%20Examples/polarization_grating.py) - Polarization grating simulation
+- [`binary_grating_oblique.py`](Meep%20Examples/binary_grating_oblique.py) - Oblique binary grating
+- [`binary_grating_n2f.py`](Meep%20Examples/binary_grating_n2f.py) - Near-to-far field analysis
+- [`grating2d_triangular_lattice.py`](Meep%20Examples/grating2d_triangular_lattice.py) - 2D triangular lattice grating
+- [`binary_grating_phasemap_advanced.py`](Meep%20Examples/binary_grating_phasemap_advanced.py) - Advanced binary grating phase map analysis
 
 ### 🔬 **Scattering & Radiation Examples**
-- [`cherenkov_radiation.py`](examples/cherenkov_radiation.py) - Cherenkov radiation analysis
-- [`dipole_in_vacuum_cyl_off_axis.py`](examples/dipole_in_vacuum_cyl_off_axis.py) - Off-axis dipole radiation
-- [`differential_cross_section.py`](examples/differential_cross_section.py) - Differential scattering cross-section
-- [`antenna_radiation.py`](examples/antenna_radiation.py) - Antenna radiation pattern
-- [`point_dipole_cyl.py`](examples/point_dipole_cyl.py) - Point dipole in cylindrical geometry
-- [`cylinder_cross_section.py`](examples/cylinder_cross_section.py) - Cylinder scattering cross-section
-- [`mie_scattering.py`](examples/mie_scattering.py) - Mie scattering analysis
+- [`cherenkov-radiation.py`](Meep%20Examples/cherenkov-radiation.py) - Cherenkov radiation analysis
+- [`dipole_in_vacuum_cyl_off_axis.py`](Meep%20Examples/dipole_in_vacuum_cyl_off_axis.py) - Off-axis dipole radiation
+- [`differential_cross_section.py`](Meep%20Examples/differential_cross_section.py) - Differential scattering cross-section
+- [`antenna-radiation.py`](Meep%20Examples/antenna-radiation.py) - Antenna radiation pattern
+- [`point_dipole_cyl.py`](Meep%20Examples/point_dipole_cyl.py) - Point dipole in cylindrical geometry
+- [`cylinder_cross_section.py`](Meep%20Examples/cylinder_cross_section.py) - Cylinder scattering cross-section
+- [`mie_scattering.py`](Meep%20Examples/mie_scattering.py) - Mie scattering analysis
 
 ### 🏗️ **MPB (Eigenmode) Examples**
-- [`mpb_hole_slab.py`](examples/mpb_hole_slab.py) - Holey slab eigenmode analysis
-- [`mpb_tri_holes.py`](examples/mpb_tri_holes.py) - Triangular hole photonic crystal
-- [`mpb_bragg.py`](examples/mpb_bragg.py) - Bragg reflector analysis
-- [`mpb_strip.py`](examples/mpb_strip.py) - Strip waveguide eigenmodes
-- [`mpb_sq_rods.py`](examples/mpb_sq_rods.py) - Square rod photonic crystal
-- [`mpb_tri_rods.py`](examples/mpb_tri_rods.py) - Triangular rod photonic crystal
-- [`mpb_line_defect.py`](examples/mpb_line_defect.py) - Line defect in photonic crystal
-- [`mpb_tutorial.py`](examples/mpb_tutorial.py) - MPB tutorial examples
-- [`mpb_diamond.py`](examples/mpb_diamond.py) - Diamond structure analysis
-- [`mpb_honey_rods.py`](examples/mpb_honey_rods.py) - Honeycomb rod structure
-- [`parallel_wvgs_mpb.py`](examples/parallel_wvgs_mpb.py) - Parallel waveguides MPB analysis
-- [`mpb_bragg_sine.py`](examples/mpb_bragg_sine.py) - Sine-modulated Bragg structure
-- [`mpb_data_analysis.py`](examples/mpb_data_analysis.py) - MPB data analysis techniques
+- [`mpb_hole_slab.py`](Meep%20Examples/mpb_hole_slab.py) - Holey slab eigenmode analysis
+- [`mpb_tri_holes.py`](Meep%20Examples/mpb_tri_holes.py) - Triangular hole photonic crystal
+- [`mpb_bragg.py`](Meep%20Examples/mpb_bragg.py) - Bragg reflector analysis
+- [`mpb_strip.py`](Meep%20Examples/mpb_strip.py) - Strip waveguide eigenmodes
+- [`mpb_sq_rods.py`](Meep%20Examples/mpb_sq_rods.py) - Square rod photonic crystal
+- [`mpb_tri_rods.py`](Meep%20Examples/mpb_tri_rods.py) - Triangular rod photonic crystal
+- [`mpb_line_defect.py`](Meep%20Examples/mpb_line_defect.py) - Line defect in photonic crystal
+- [`mpb_tutorial.py`](Meep%20Examples/mpb_tutorial.py) - MPB tutorial examples
+- [`mpb_diamond.py`](Meep%20Examples/mpb_diamond.py) - Diamond structure analysis
+- [`mpb_honey_rods.py`](Meep%20Examples/mpb_honey_rods.py) - Honeycomb rod structure
+- [`parallel-wvgs-mpb.py`](Meep%20Examples/parallel-wvgs-mpb.py) - Parallel waveguides MPB analysis
+- [`mpb_bragg_sine.py`](Meep%20Examples/mpb_bragg_sine.py) - Sine-modulated Bragg structure
+- [`mpb_data_analysis.py`](Meep%20Examples/mpb_data_analysis.py) - MPB data analysis techniques
 
 ### 🎯 **Cavity & Resonator Examples**
-- [`holey_wvg_cavity.py`](examples/holey_wvg_cavity.py) - Holey waveguide cavity
-- [`cavity_farfield.py`](examples/cavity_farfield.py) - Cavity far-field analysis
-- [`planar_cavity_ldos.py`](examples/planar_cavity_ldos.py) - Planar cavity LDOS analysis
-- [`cavity_arrayslice.py`](examples/cavity_arrayslice.py) - Cavity array slice analysis
-- [`ring_mode_overlap.py`](examples/ring_mode_overlap.py) - Ring resonator mode overlap
-- [`metal_cavity_ldos.py`](examples/metal_cavity_ldos.py) - Metal cavity LDOS analysis
+- [`holey-wvg-cavity.py`](Meep%20Examples/holey-wvg-cavity.py) - Holey waveguide cavity
+- [`cavity-farfield.py`](Meep%20Examples/cavity-farfield.py) - Cavity far-field analysis
+- [`planar_cavity_ldos.py`](Meep%20Examples/planar_cavity_ldos.py) - Planar cavity LDOS analysis
+- [`cavity_arrayslice.py`](Meep%20Examples/cavity_arrayslice.py) - Cavity array slice analysis
+- [`ring-mode-overlap.py`](Meep%20Examples/ring-mode-overlap.py) - Ring resonator mode overlap
+- [`metal-cavity-ldos.py`](Meep%20Examples/metal-cavity-ldos.py) - Metal cavity LDOS analysis
 
 ### 🎛️ **Adjoint Optimization Examples**
-- [`mode_converter.py`](examples/mode_converter.py) - Mode converter optimization
-- [`binary_grating_levelset.py`](examples/binary_grating_levelset.py) - Level set binary grating optimization
-- [`multilayer_opt.py`](examples/multilayer_opt.py) - Multilayer optimization
+- [`mode_converter.py`](Meep%20Examples/mode_converter.py) - Mode converter optimization
+- [`binary_grating_levelset.py`](Meep%20Examples/binary_grating_levelset.py) - Level set binary grating optimization
+- [`multilayer_opt.py`](Meep%20Examples/multilayer_opt.py) - Multilayer optimization
 
 ### 🔧 **Advanced & Specialized Examples**
-- [`perturbation_theory.py`](examples/perturbation_theory.py) - Perturbation theory analysis
-- [`eps_fit_lorentzian.py`](examples/eps_fit_lorentzian.py) - Lorentzian material fitting
-- [`holey_wvg_bands.py`](examples/holey_wvg_bands.py) - Holey waveguide band structure
-- [`gaussian_beam.py`](examples/gaussian_beam.py) - Gaussian beam propagation
-- [`parallel_wvgs_force.py`](examples/parallel_wvgs_force.py) - Parallel waveguide force analysis
-- [`3rd_harm_1d.py`](examples/3rd_harm_1d.py) - Third harmonic generation
-- [`extraction_eff_ldos.py`](examples/extraction_eff_ldos.py) - Extraction efficiency and LDOS
-- [`mode_coeff_phase.py`](examples/mode_coeff_phase.py) - Mode coefficient phase analysis
-- [`absorbed_power_density.py`](examples/absorbed_power_density.py) - Absorbed power density analysis
-- [`absorber_1d.py`](examples/absorber_1d.py) - 1D absorber analysis
-- [`metasurface_lens.py`](examples/metasurface_lens.py) - Metasurface lens design
-- [`chirped_pulse.py`](examples/chirped_pulse.py) - Chirped pulse propagation
-- [`multilevel_atom.py`](examples/multilevel_atom.py) - Multilevel atom interaction
-- [`disc_extraction_efficiency.py`](examples/disc_extraction_efficiency.py) - Disc extraction efficiency
-- [`stochastic_emitter_line.py`](examples/stochastic_emitter_line.py) - Stochastic emitter line analysis
-- [`oblique_planewave.py`](examples/oblique_planewave.py) - Oblique plane wave analysis
-- [`stochastic_emitter_reciprocity.py`](examples/stochastic_emitter_reciprocity.py) - Stochastic emitter reciprocity
-- [`mode_decomposition.py`](examples/mode_decomposition.py) - Mode decomposition analysis
-- [`antenna_pec_ground_plane.py`](examples/antenna_pec_ground_plane.py) - PEC ground plane antenna
-- [`finite_grating.py`](examples/finite_grating.py) - Finite grating analysis
-- [`refl_quartz.py`](examples/refl_quartz.py) - Quartz reflection analysis
-- [`solve_cw.py`](examples/solve_cw.py) - Continuous wave solver
-- [`wvg_src.py`](examples/wvg_src.py) - Waveguide source analysis
-- [`dipole_in_vacuum_1d.py`](examples/dipole_in_vacuum_1d.py) - 1D dipole in vacuum
-- [`stochastic_emitter.py`](examples/stochastic_emitter.py) - Stochastic emitter analysis
-- [`material_dispersion.py`](examples/material_dispersion.py) - Material dispersion analysis
-- [`disc_radiation_pattern.py`](examples/disc_radiation_pattern.py) - Disc radiation pattern
-- [`faraday_rotation.py`](examples/faraday_rotation.py) - Faraday rotation analysis
-- [`phase_in_material.py`](examples/phase_in_material.py) - Phase analysis in materials
-- [`diffracted_planewave.py`](examples/diffracted_planewave.py) - Diffracted plane wave
-- [`perturbation_theory_2d.py`](examples/perturbation_theory_2d.py) - 2D perturbation theory
+- [`perturbation_theory.py`](Meep%20Examples/perturbation_theory.py) - Perturbation theory analysis
+- [`eps_fit_lorentzian.py`](Meep%20Examples/eps_fit_lorentzian.py) - Lorentzian material fitting
+- [`holey-wvg-bands.py`](Meep%20Examples/holey-wvg-bands.py) - Holey waveguide band structure
+- [`gaussian-beam.py`](Meep%20Examples/gaussian-beam.py) - Gaussian beam propagation
+- [`parallel-wvgs-force.py`](Meep%20Examples/parallel-wvgs-force.py) - Parallel waveguide force analysis
+- [`3rd-harm-1d.py`](Meep%20Examples/3rd-harm-1d.py) - Third harmonic generation
+- [`extraction_eff_ldos.py`](Meep%20Examples/extraction_eff_ldos.py) - Extraction efficiency and LDOS
+- [`mode_coeff_phase.py`](Meep%20Examples/mode_coeff_phase.py) - Mode coefficient phase analysis
+- [`absorbed_power_density.py`](Meep%20Examples/absorbed_power_density.py) - Absorbed power density analysis
+- [`absorber-1d.py`](Meep%20Examples/absorber-1d.py) - 1D absorber analysis
+- [`metasurface_lens.py`](Meep%20Examples/metasurface_lens.py) - Metasurface lens design
+- [`chirped_pulse.py`](Meep%20Examples/chirped_pulse.py) - Chirped pulse propagation
+- [`multilevel-atom.py`](Meep%20Examples/multilevel-atom.py) - Multilevel atom interaction
+- [`disc_extraction_efficiency.py`](Meep%20Examples/disc_extraction_efficiency.py) - Disc extraction efficiency
+- [`stochastic_emitter_line.py`](Meep%20Examples/stochastic_emitter_line.py) - Stochastic emitter line analysis
+- [`oblique-planewave.py`](Meep%20Examples/oblique-planewave.py) - Oblique plane wave analysis
+- [`stochastic_emitter_reciprocity.py`](Meep%20Examples/stochastic_emitter_reciprocity.py) - Stochastic emitter reciprocity
+- [`mode-decomposition.py`](Meep%20Examples/mode-decomposition.py) - Mode decomposition analysis
+- [`antenna_pec_ground_plane.py`](Meep%20Examples/antenna_pec_ground_plane.py) - PEC ground plane antenna
+- [`finite_grating.py`](Meep%20Examples/finite_grating.py) - Finite grating analysis
+- [`refl-quartz.py`](Meep%20Examples/refl-quartz.py) - Quartz reflection analysis
+- [`solve-cw.py`](Meep%20Examples/solve-cw.py) - Continuous wave solver
+- [`wvg-src.py`](Meep%20Examples/wvg-src.py) - Waveguide source analysis
+- [`dipole_in_vacuum_1D.py`](Meep%20Examples/dipole_in_vacuum_1D.py) - 1D dipole in vacuum
+- [`stochastic_emitter.py`](Meep%20Examples/stochastic_emitter.py) - Stochastic emitter analysis
+- [`material-dispersion.py`](Meep%20Examples/material-dispersion.py) - Material dispersion analysis
+- [`disc_radiation_pattern.py`](Meep%20Examples/disc_radiation_pattern.py) - Disc radiation pattern
+- [`faraday-rotation.py`](Meep%20Examples/faraday-rotation.py) - Faraday rotation analysis
+- [`phase_in_material.py`](Meep%20Examples/phase_in_material.py) - Phase analysis in materials
+- [`diffracted_planewave.py`](Meep%20Examples/diffracted_planewave.py) - Diffracted plane wave
+- [`perturbation_theory_2d.py`](Meep%20Examples/perturbation_theory_2d.py) - 2D perturbation theory
 
 ### 🔮 **Future Framework Examples**
 - **Tidy3D Examples**: Coming soon - waveguide simulations, FOM tracking
@@ -191,7 +187,7 @@ This repository contains **85+ comprehensive examples** covering a wide range of
 
 ## 🎮 Getting Started
 
-### 1. **Basic Integration** (SDK v0.0.4)
+### 1. **Basic Integration**
 
 ```python
 import optixlog
@@ -220,7 +216,7 @@ with optixlog.run("my_first_simulation",
     client.log_array_as_image("field_plot", field, cmap='RdBu')
 ```
 
-### 2. **Parameter Sweeps** (SDK v0.0.4)
+### 2. **Parameter Sweeps**
 
 ```python
 # Sweep over multiple parameters
@@ -242,7 +238,7 @@ for wavelength in wavelengths:
                         title=f"Transmission (λ={wavelength:.2f})")
 ```
 
-### 3. **Artifact Management** (SDK v0.0.4 - 80% Less Code!)
+### 3. **Artifact Management**
 
 ```python
 import matplotlib.pyplot as plt
@@ -254,18 +250,16 @@ with optixlog.run("artifact_demo") as client:
     ax.set_xlabel('Frequency')
     ax.set_ylabel('Transmission')
     
-    # ONE LINE! No manual save/upload/cleanup!
+    # One line to log matplotlib figures!
     result = client.log_matplotlib("transmission_spectrum", fig)
     print(f"✓ Plot uploaded: {result.url}")
     
-    # Auto-detects content type!
+    # Auto-detects content type
     client.log_file("data", "results/data.csv")
     
     # Or use helper to create plot from data
     client.log_plot("quick_plot", x_data, y_data, title="My Plot")
 ```
-
-**Boilerplate reduced by 80%!** No more manual `savefig()` → `PIL.Image` → `log_image()` → `os.remove()`.
 
 ## 📊 Key Features
 

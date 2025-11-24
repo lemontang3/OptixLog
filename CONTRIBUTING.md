@@ -42,23 +42,21 @@ Examples:
 - `12_metasurface_design.py`
 - `15_multi_parameter_sweep.py`
 
-### Example Template (SDK v0.0.4)
-
-**IMPORTANT: All new examples must use SDK v0.0.4 features!**
+### Example Template
 
 ```python
 """
-[Example Name] with OptixLog SDK v0.0.4
+[Example Name] with OptixLog
 
 Description: Brief description of what this simulation does
 Physics: Explanation of the underlying physics
 
-NEW in v0.0.4:
-✓ Context managers - auto-cleanup
-✓ log_matplotlib() - one-line plotting  
-✓ log_array_as_image() - direct array visualization
-✓ Return values with URLs
-✓ Colored console output
+Features demonstrated:
+- Context managers for automatic cleanup
+- log_matplotlib() for one-line plotting  
+- log_array_as_image() for direct array visualization
+- Return values with URLs
+- Colored console output
 
 Author: Your Name
 Date: YYYY-MM-DD
@@ -73,7 +71,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    """Main simulation function with SDK v0.0.4 features"""
+    """Main simulation function with OptixLog tracking"""
     
     # Get API key
     api_key = os.getenv("OPTIX_API_KEY")
@@ -81,15 +79,14 @@ def main():
         print("❌ Error: OPTIX_API_KEY not set!")
         return
     
-    # NEW in v0.0.4: Use context manager!
+    # Use context manager for automatic cleanup
     with optixlog.run(
         run_name="example_name",
         project="MyProject",
         config={
             "parameter1": value1,
             "parameter2": value2,
-            "description": "Brief description",
-            "sdk_version": "0.0.4"
+            "description": "Brief description"
         },
         create_project_if_not_exists=True
     ) as client:
@@ -100,7 +97,7 @@ def main():
         sim = mp.Simulation(...)
         sim.run(...)
         
-        # NEW in v0.0.4: Get return values!
+        # Get return values for feedback
         result = client.log(step=0, metric1=value1, metric2=value2)
         if result and result.success:
             print(f"✓ Metrics logged: {result.url}")
@@ -108,7 +105,7 @@ def main():
         # Get field data
         field_data = sim.get_array(...)
         
-        # NEW in v0.0.4: Log arrays directly as images!
+        # Log arrays directly as images
         client.log_array_as_image("field_plot", field_data, cmap='hot')
         
         # Create matplotlib plot
@@ -116,7 +113,7 @@ def main():
         ax.plot(x, y)
         ax.set_title("My Plot")
         
-        # NEW in v0.0.4: One line instead of 10!
+        # One line to log the plot!
         client.log_matplotlib("my_plot", fig)
         plt.close(fig)
         
@@ -126,19 +123,19 @@ if __name__ == "__main__":
     main()
 ```
 
-## 🎨 SDK v0.0.4 Best Practices
+## 🎨 OptixLog Best Practices
 
-### ✅ DO Use These New Features
+### ✅ DO Use These Features
 
-**1. Context Managers (Required for all new examples)**
+**1. Context Managers (Required for all examples)**
 ```python
 # ✅ CORRECT - Use context manager
 with optixlog.run("experiment", config={...}) as client:
     # Your code here
     pass
 
-# ❌ WRONG - Don't use old init() style
-client = optixlog.init(...)  # Old style - avoid in new examples
+# ❌ WRONG - Don't use init() without context manager
+client = optixlog.init(...)  # Not recommended - use context manager
 ```
 
 **2. Convenience Helpers (Eliminate boilerplate)**
@@ -146,10 +143,10 @@ client = optixlog.init(...)  # Old style - avoid in new examples
 # ✅ CORRECT - One line!
 client.log_matplotlib("plot", fig)
 
-# ❌ WRONG - Manual save/upload/cleanup (old way)
+# ❌ WRONG - Manual save/upload/cleanup
 plt.savefig("plot.png")
 client.log_file("plot", "plot.png", "image/png")
-os.remove("plot.png")
+os.remove("plot.png")  # Unnecessary boilerplate!
 ```
 
 **3. Array Visualization**
@@ -157,10 +154,11 @@ os.remove("plot.png")
 # ✅ CORRECT - Direct array logging
 client.log_array_as_image("field", field_array, cmap='RdBu')
 
-# ❌ WRONG - Manual conversion (old way)
+# ❌ WRONG - Manual conversion with temporary files
 plt.imshow(field_array)
 plt.savefig("field.png")
 client.log_file("field", "field.png")
+os.remove("field.png")
 ```
 
 **4. Return Values**
@@ -170,8 +168,8 @@ result = client.log(step=0, loss=0.5)
 if result and result.success:
     print(f"✓ Logged: {result.url}")
 
-# ❌ WRONG - Ignoring feedback (old style, but still works)
-client.log(step=0, loss=0.5)
+# ❌ ACCEPTABLE but not ideal - Ignoring feedback
+client.log(step=0, loss=0.5)  # Works, but you miss out on useful feedback
 ```
 
 **5. Simple Data Plots**
@@ -195,11 +193,11 @@ client.log_file("spectrum", "spectrum.png")
 4. **Don't create temporary files** - Use helpers
 5. **Don't ignore return values** - They provide useful feedback
 
-### 📊 Before vs After Example
+### 📊 Example Comparison
 
-**BEFORE (v0.0.3) - 25 lines:**
+**WITHOUT Convenience Helpers - 15 lines:**
 ```python
-client = optixlog.init(api_key=..., api_url=..., project=...)
+client = optixlog.init(api_key=..., project=...)
 
 client.log(step=0, loss=0.5)
 
@@ -215,7 +213,7 @@ client.log_image("plot", img)
 os.remove(path)
 ```
 
-**AFTER (v0.0.4) - 7 lines:**
+**WITH Convenience Helpers - 7 lines:**
 ```python
 with optixlog.run("experiment") as client:
     result = client.log(step=0, loss=0.5)
@@ -225,7 +223,7 @@ with optixlog.run("experiment") as client:
     client.log_matplotlib("plot", plt.gcf())
 ```
 
-**Result: 72% less code!**
+**Result: 53% less code + cleaner!**
 
 ### Documentation Requirements
 

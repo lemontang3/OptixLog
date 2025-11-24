@@ -1,15 +1,14 @@
 """
-Binary Grating Hyperparameter Sweep with OptixLog SDK v0.0.4
+Binary Grating Hyperparameter Sweep with OptixLog
 
 This script performs a comprehensive hyperparameter sweep of binary grating simulations,
 creating separate OptixLog runs for each parameter combination.
 
-NEW in v0.0.4:
-✓ Context managers - auto-cleanup
-✓ log_matplotlib() - one-line plotting
-✓ Return values with URLs
-✓ Colored console output
-✓ 80% less boilerplate!
+Features demonstrated:
+- Context managers for automatic cleanup
+- log_matplotlib() for one-line plotting
+- Return values with URLs
+- Colored console output
 
 Usage:
     export OPTIX_API_KEY="proj_your_api_key_here"
@@ -49,7 +48,7 @@ k_point = mp.Vector3(0, 0, 0)
 glass = mp.Medium(index=1.5)
 
 def grating_with_detailed_logging(gp, gh, gdc, oddz, client, run_step=0):
-    """Enhanced grating simulation with detailed FDTD step logging"""
+    """Grating simulation with detailed FDTD step logging"""
     
     sx = dpml + dsub + gh + dpad + dpml
     sy = gp
@@ -68,7 +67,7 @@ def grating_with_detailed_logging(gp, gh, gdc, oddz, client, run_step=0):
 
     symmetries = [mp.Mirror(mp.Y, phase=+1 if oddz else -1)]
 
-    # NEW in v0.0.4: Log with return values
+    # Log with return values
     result = client.log(run_step,
         simulation_phase="initialization",
         grating_period=gp,
@@ -191,7 +190,7 @@ def grating_with_detailed_logging(gp, gh, gdc, oddz, client, run_step=0):
 
 
 def run_hyperparameter_sweep():
-    """Run hyperparameter sweep with v0.0.4 features"""
+    """Run hyperparameter sweep with OptixLog tracking"""
     
     # Check API key
     api_key = os.getenv("OPTIX_API_KEY")
@@ -212,7 +211,7 @@ def run_hyperparameter_sweep():
     param_combinations = list(itertools.product(gp_values, gh_values, oddz_values))
     
     print("=" * 70)
-    print("Binary Grating Hyperparameter Sweep - OptixLog SDK v0.0.4")
+    print("Binary Grating Hyperparameter Sweep - OptixLog")
     print("=" * 70)
     print(f"\nParameter Grid:")
     print(f"  Grating Periods: {gp_values}")
@@ -234,7 +233,7 @@ def run_hyperparameter_sweep():
         print(f"{'='*70}")
         
         try:
-            # NEW in v0.0.4: Context manager!
+            # Use context manager for automatic cleanup
             with optixlog.run(
                 run_name=f"binary_grating_GP{gp}_GH{gh}_{'oddz' if oddz else 'evenz'}",
                 project="BinaryGratingSweep",
@@ -247,8 +246,7 @@ def run_hyperparameter_sweep():
                     "duty_cycle_steps": len(gdc),
                     "resolution": resolution,
                     "wavelength_range_um": [wvl_min, wvl_max],
-                    "num_frequencies": nfreq,
-                    "sdk_version": "0.0.4"
+                    "num_frequencies": nfreq
                 },
                 create_project_if_not_exists=True
             ) as client:
@@ -299,7 +297,7 @@ def run_hyperparameter_sweep():
                 
                 plt.tight_layout()
                 
-                # NEW in v0.0.4: One line instead of 10!
+                # One line to log matplotlib figure!
                 viz_result = client.log_matplotlib("binary_grating_phase_map", fig,
                     meta={
                         "stage": "results",
@@ -349,12 +347,6 @@ def run_hyperparameter_sweep():
     print(f"✅ Successful runs: {successful_runs}")
     print(f"❌ Failed runs: {failed_runs}")
     print(f"📊 Total combinations tested: {len(param_combinations)}")
-    print(f"\n🎊 SDK v0.0.4 Features Used:")
-    print(f"  ✓ Context managers - automatic cleanup")
-    print(f"  ✓ log_matplotlib() - zero boilerplate plotting")
-    print(f"  ✓ Return values - immediate feedback")
-    print(f"  ✓ Colored output - beautiful terminal")
-    print(f"  Boilerplate reduction: ~80%!")
     print(f"{'='*70}\n")
 
 if __name__ == "__main__":

@@ -1,15 +1,15 @@
 """
-Straight Waveguide Simulation with OptixLog SDK v0.0.4
+Straight Waveguide Simulation with OptixLog
 
 This example demonstrates a simple straight waveguide simulation using Meep,
-with comprehensive logging using the NEW SDK v0.0.4 features:
+with comprehensive logging of simulation parameters, field data, and results.
 
-✓ Context managers (auto-cleanup!)
-✓ log_matplotlib() - one-line plot logging
-✓ log_array_as_image() - direct array visualization
-✓ Return values with URLs
-✓ Colored console output
-✓ Zero boilerplate!
+Features demonstrated:
+- Context managers for automatic cleanup
+- log_matplotlib() for one-line plot logging
+- log_array_as_image() for direct array visualization
+- Return values with URLs
+- Colored console output
 
 Based on the Meep tutorial: plotting permittivity and fields of a straight waveguide
 """
@@ -24,18 +24,17 @@ import numpy as np
 api_key = os.getenv("OPTIX_API_KEY", "proj_YOUR_API_KEY_HERE")
 project_name = os.getenv("OPTIX_PROJECT", "MeepExamples")
 
-print(f"🚀 Starting straight waveguide simulation with OptixLog SDK v0.0.4")
+print(f"🚀 Starting straight waveguide simulation with OptixLog")
 
 try:
-    # NEW in v0.0.4: Context manager!
+    # Use context manager for automatic cleanup
     with optixlog.run(
         run_name="straight_waveguide_simulation",
         project=project_name,
         config={
             "simulation_type": "straight_waveguide",
             "description": "Basic straight waveguide with field visualization",
-            "framework": "meep",
-            "sdk_version": "0.0.4"
+            "framework": "meep"
         },
         create_project_if_not_exists=True
     ) as client:
@@ -49,7 +48,7 @@ try:
         resolution = 10
         simulation_time = 200
         
-        # NEW in v0.0.4: Get return values!
+        # Log with return values
         result = client.log(step=0, 
                    cell_x=cell.x, cell_y=cell.y, cell_z=cell.z,
                    epsilon_waveguide=epsilon_wg,
@@ -115,15 +114,14 @@ try:
         # Generate and log plots
         print("📊 Generating field visualizations...")
         
-        # ===== PERMITTIVITY PLOT =====
-        # NEW in v0.0.4: One line instead of 10!
+        # Permittivity plot
         fig1, ax1 = plt.subplots(figsize=(10, 5))
         im1 = ax1.imshow(eps_data.transpose(), interpolation="spline36", cmap="binary")
         ax1.set_title("Waveguide Permittivity Distribution")
         plt.colorbar(im1, ax=ax1, label="Relative Permittivity")
         ax1.axis("off")
         
-        # ONE LINE! No manual save/upload/cleanup!
+        # One line to log - no manual save/upload/cleanup!
         eps_result = client.log_matplotlib("permittivity_plot", fig1, 
                                           meta={"description": "Waveguide permittivity distribution", 
                                                 "component": "permittivity"})
@@ -133,7 +131,7 @@ try:
         
         plt.close(fig1)
         
-        # ===== FIELD PLOT =====
+        # Field plot
         fig2, ax2 = plt.subplots(figsize=(10, 5))
         ax2.imshow(eps_data.transpose(), interpolation="spline36", cmap="binary")
         im2 = ax2.imshow(ez_data.transpose(), interpolation="spline36", cmap="RdBu", alpha=0.9)
@@ -141,7 +139,7 @@ try:
         plt.colorbar(im2, ax=ax2, label="Field Amplitude")
         ax2.axis("off")
         
-        # ONE LINE again!
+        # One line again!
         field_result = client.log_matplotlib("field_plot", fig2,
                                             meta={"description": "Electric field Ez distribution", 
                                                   "component": "Ez"})
@@ -151,8 +149,7 @@ try:
         
         plt.close(fig2)
         
-        # ===== BONUS: Direct array visualization =====
-        # NEW in v0.0.4: Log numpy array directly as heatmap!
+        # Direct array visualization
         array_result = client.log_array_as_image("field_heatmap", 
                                                   np.abs(ez_data), 
                                                   cmap='hot',
@@ -166,15 +163,6 @@ try:
         print(f"📈 Logged 2 metric steps and 3 visualizations to OptixLog")
         print(f"🔗 View run at: https://optixlog.com/runs/{client.run_id}")
         print("="*70)
-        
-        print("\n🎉 SDK v0.0.4 Features Used:")
-        print("  ✓ Context manager - automatic cleanup")
-        print("  ✓ log_matplotlib() - zero boilerplate plotting")
-        print("  ✓ log_array_as_image() - direct array visualization")
-        print("  ✓ Return values - immediate URLs")
-        print("  ✓ Colored output - beautiful terminal")
-        print("\n  Boilerplate reduction: ~80% compared to v0.0.3!")
-        print("="*70)
 
 except ValueError as e:
     print(f"\n❌ OptixLog Error: {e}")
@@ -184,4 +172,4 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# No manual cleanup needed! Context manager handles it all!
+# No manual cleanup needed - context manager handles everything!

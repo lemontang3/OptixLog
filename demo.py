@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-OptixLog Demo - SDK v0.0.4
+OptixLog Demo
 
-This demo showcases the new SDK v0.0.4 features:
-- ✓ Context managers (80% less boilerplate!)
-- ✓ Convenience helpers (log_plot, log_matplotlib)
-- ✓ Return values with URLs
-- ✓ Colored console output
-- ✓ Input validation (NaN/Inf detection)
-- ✓ Auto content-type detection
+This demo showcases OptixLog features for experiment tracking:
+- Context managers for automatic cleanup
+- Convenience helpers (log_plot, log_matplotlib)
+- Return values with URLs
+- Colored console output
+- Input validation (NaN/Inf detection)
+- Auto content-type detection
 
 Demonstrates a parameter sweep simulation with comprehensive logging.
 """
@@ -35,7 +35,7 @@ def simulate_series(a, b, c, y0=1.0, steps=60):
 
 def main(steps=60):
     """
-    Run parameter sweep simulation with OptixLog v0.0.4
+    Run parameter sweep simulation with OptixLog
     """
     # Check API key
     api_key = os.getenv("OPTIX_API_KEY")
@@ -59,9 +59,9 @@ def main(steps=60):
         configs.append((f"config_{i+1}", a, b, c))
     
     print("=" * 70)
-    print("OptixLog SDK v0.0.4 Demo - Parameter Sweep")
+    print("OptixLog Demo - Parameter Sweep")
     print("=" * 70)
-    print(f"\nRunning {len(configs)} configurations with new SDK features:")
+    print(f"\nRunning {len(configs)} configurations with OptixLog features:")
     print("  ✓ Context managers (auto-cleanup)")
     print("  ✓ Convenience helpers (log_plot)")
     print("  ✓ Return values with URLs")
@@ -77,7 +77,7 @@ def main(steps=60):
         print(f"Running {name}: a={a:.3f}, b={b:.3f}, c={c:.3f}")
         print(f"{'='*70}")
         
-        # NEW in v0.0.4: Context manager! Auto-cleanup on exit
+        # Use context manager - auto-cleanup on exit
         with optixlog.run(
             run_name=name,
             project="Examples",
@@ -96,14 +96,13 @@ def main(steps=60):
             series = simulate_series(a, b, c, steps=steps)
             all_series.append((name, series))
             
-            # NEW in v0.0.4: Get return values!
             steps_data = [step for step, _ in series]
             values_data = [value for _, value in series]
             
             # Log metrics step by step
             y = 1.0
             for t in range(steps):
-                # NEW in v0.0.4: Returns MetricResult with success status
+                # Returns MetricResult with success status
                 result = client.log(
                     step=t,
                     y=y,
@@ -117,7 +116,7 @@ def main(steps=60):
                 if t % 10 == 0 and result:
                     print(f"  Step {t:3d}: y={y:.4f} (logged ✓)")
             
-            # NEW in v0.0.4: Use convenience helper! One line instead of 10!
+            # Use convenience helper for plotting
             plot_result = client.log_plot(
                 "timeseries",
                 steps_data,
@@ -177,7 +176,7 @@ def main(steps=60):
         ax.legend(loc='best')
         ax.grid(True, alpha=0.3)
         
-        # NEW in v0.0.4: log_matplotlib() - no manual save/upload/cleanup!
+        # log_matplotlib() - no manual save/upload/cleanup!
         comparison_result = client.log_matplotlib("comparison_all_configs", fig)
         
         if comparison_result and comparison_result.success:
@@ -192,7 +191,7 @@ def main(steps=60):
     print(f"{'='*70}")
     print(f"\n💡 View your runs at: https://optixlog.com")
     print(f"   Project: Examples")
-    print(f"\n🎉 SDK v0.0.4 Features Used:")
+    print(f"\n🎉 OptixLog Features Demonstrated:")
     print(f"   ✓ Context managers - auto-cleanup")
     print(f"   ✓ log_plot() - one-line plotting")
     print(f"   ✓ log_matplotlib() - zero boilerplate")
@@ -201,4 +200,4 @@ def main(steps=60):
     print(f"{'='*70}\n")
 
 if __name__ == "__main__":
-    main(use_optixlog=True)
+    main()

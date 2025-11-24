@@ -1,12 +1,16 @@
 """
-Ring Resonator Mode Analysis with OptixLog SDK v0.0.4
+Ring Resonator Mode Analysis with OptixLog
 
-This example demonstrates ring resonator mode calculation with the new SDK v0.0.4 features:
-✓ Context managers - auto-cleanup
-✓ log_matplotlib() - one-line plotting
-✓ Return values with URLs
-✓ Colored console output
-✓ 80% less boilerplate!
+This example demonstrates ring resonator mode calculation and analysis with
+comprehensive logging of resonator parameters, mode frequencies, and field
+distributions.
+
+Features demonstrated:
+- Context managers for automatic cleanup
+- log_matplotlib() for one-line plotting
+- log_plot() for data visualization
+- Return values with URLs
+- Colored console output
 
 Based on the Meep tutorial: calculating 2D ring-resonator modes
 """
@@ -21,19 +25,18 @@ import matplotlib.pyplot as plt
 api_key = os.getenv("OPTIX_API_KEY", "proj_YOUR_API_KEY_HERE")
 project_name = os.getenv("OPTIX_PROJECT", "RingResonator")
 
-print(f"🚀 Starting ring resonator simulation with OptixLog SDK v0.0.4")
+print(f"🚀 Starting ring resonator simulation with OptixLog")
 
 def main():
     try:
-        # NEW in v0.0.4: Context manager!
+        # Use context manager
         with optixlog.run(
             run_name="ring_resonator_modes",
             project=project_name,
             config={
                 "simulation_type": "ring_resonator",
                 "description": "2D ring resonator mode calculation and analysis",
-                "framework": "meep",
-                "sdk_version": "0.0.4"
+                "framework": "meep"
             },
             create_project_if_not_exists=True
         ) as client:
@@ -54,7 +57,7 @@ def main():
             df = 0.1  # pulse width (in frequency)
             source_position = r + 0.1
             
-            # NEW in v0.0.4: Return values!
+            # Log configuration
             result = client.log(step=0,
                        waveguide_index=n,
                        waveguide_width=w,
@@ -131,14 +134,14 @@ def main():
             
             print("\n📊 Generating visualizations...")
             
-            # ===== GEOMETRY VISUALIZATION =====
+            # Geometry visualization
             fig1, ax1 = plt.subplots(figsize=(8, 8))
             im1 = ax1.imshow(eps_data.transpose(), cmap='binary', interpolation='spline36')
             ax1.set_title("Ring Resonator Geometry")
             ax1.axis('off')
             plt.colorbar(im1, ax=ax1, label="Permittivity")
             
-            # NEW in v0.0.4: One line instead of 10!
+            # One line to log!
             geom_result = client.log_matplotlib("geometry", fig1,
                                                meta={"description": "Ring resonator geometry"})
             
@@ -147,7 +150,7 @@ def main():
             
             plt.close(fig1)
             
-            # ===== FIELD VISUALIZATION =====
+            # Field visualization
             fig2, ax2 = plt.subplots(figsize=(8, 8))
             ax2.imshow(eps_data.transpose(), cmap='binary', alpha=0.3, interpolation='spline36')
             im2 = ax2.imshow(ez_data.transpose(), cmap='RdBu', alpha=0.9, interpolation='spline36')
@@ -155,7 +158,7 @@ def main():
             ax2.axis('off')
             plt.colorbar(im2, ax=ax2, label="Field Amplitude")
             
-            # ONE LINE again!
+            # One line again!
             field_result = client.log_matplotlib("field_distribution", fig2,
                                                 meta={"description": "Ez field in ring resonator"})
             
@@ -164,12 +167,11 @@ def main():
             
             plt.close(fig2)
             
-            # ===== MODE FREQUENCY PLOT =====
+            # Mode frequency plot using helper
             if len(modes) > 0:
                 mode_freqs = [m.freq for m in modes]
-                mode_Qs = [m.Q for m in modes]
                 
-                # NEW in v0.0.4: Use log_plot helper!
+                # Use log_plot helper!
                 plot_result = client.log_plot(
                     "mode_frequencies",
                     range(1, len(modes) + 1),
@@ -188,15 +190,6 @@ def main():
             print(f"📊 Logged {len(modes) + 2} metric steps and 3 visualizations")
             print(f"🔗 View run at: https://optixlog.com/runs/{client.run_id}")
             print("="*70)
-            
-            print("\n🎉 SDK v0.0.4 Features Used:")
-            print("  ✓ Context manager - automatic cleanup")
-            print("  ✓ log_matplotlib() - zero boilerplate plotting")
-            print("  ✓ log_plot() - one-line data plots")
-            print("  ✓ Return values - immediate URLs")
-            print("  ✓ Colored output - beautiful terminal")
-            print("\n  Boilerplate reduction: ~80%!")
-            print("="*70)
 
     except ValueError as e:
         print(f"\n❌ OptixLog Error: {e}")
@@ -206,7 +199,7 @@ def main():
         import traceback
         traceback.print_exc()
 
-# No manual cleanup needed! Context manager handles it!
+# No manual cleanup needed!
 
 if __name__ == "__main__":
     main()
