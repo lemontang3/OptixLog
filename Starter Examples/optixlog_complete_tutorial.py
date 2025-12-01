@@ -32,7 +32,7 @@ import csv
 
 # Set your OptixLog credentials
 API_KEY = os.getenv("OPTIX_API_KEY")  # Set via: export OPTIX_API_KEY="your_key"
-PROJECT_NAME = '35220f9f-7f5e-4502-8479-2cecf28b5b02'
+PROJECT_NAME = 'tutorial'
 print(f"API Key: {API_KEY}")
 print("✓ Imports successful!")
 print(f"Project: {PROJECT_NAME}")
@@ -50,13 +50,12 @@ with optixlog.run(
     run_name="basic_metrics_example",
     project_id=PROJECT_NAME,
     api_key=API_KEY,
-    api_url="http://optixlog.com",
     config={
         "learning_rate": 0.001,
         "batch_size": 32,
         "epochs": 50,
         "optimizer": "adam"
-    }, source="/Users/tanmaygupta/Desktop/fluxboard/OptixLog/Starter Examples/optixlog_complete_tutorial.py"
+    }, source="/Users/tanmaygupta/Desktop/fluxboard/OptixLog/Starter Examples/optixlog_complete_tutorial.py", create_project_if_not_exists=False
 ) as client:
     # Simulate a training loop with random metrics
     print("Simulating training with metrics logging...")
@@ -236,13 +235,17 @@ with optixlog.run(
         with open(csv_file, 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['epoch', 'train_loss', 'val_loss', 'train_acc', 'val_acc'])
-    
-        for epoch in range(50):
-            train_loss = 1.0 / (epoch + 1) + np.random.normal(0, 0.01)
-            val_loss = train_loss * 1.2 + np.random.normal(0, 0.01)
-            train_acc = 1 - np.exp(-epoch / 15) + np.random.normal(0, 0.01)
-            val_acc = train_acc * 0.95 + np.random.normal(0, 0.01)
-            writer.writerow([epoch, train_loss, val_loss, train_acc, val_acc])
+        
+            for epoch in range(50):
+                train_loss = 1.0 / (epoch + 1) + np.random.normal(0, 0.01)
+                val_loss = train_loss * 1.2 + np.random.normal(0, 0.01)
+                train_acc = 1 - np.exp(-epoch / 15) + np.random.normal(0, 0.01)
+                val_acc = train_acc * 0.95 + np.random.normal(0, 0.01)
+
+                writer.writerow([epoch, train_loss, val_loss, train_acc, val_acc])
+
+                # optional: flush so log_file sees the latest contents
+                f.flush()
 
             result = client.log_file("training_metrics", csv_file, "text/csv")
             
@@ -446,8 +449,7 @@ for i, config in enumerate(configs):
                 loss=loss,
                 accuracy=accuracy,
                 learning_rate=lr,
-                batch_size=batch,
-                optimizer=opt
+                batch_size=batch
             )
         
         print(f"✓ Completed {run_name}")
