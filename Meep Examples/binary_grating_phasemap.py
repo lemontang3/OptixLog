@@ -184,7 +184,7 @@ Environment Variables:
 
         client = optixlog.init(
             api_key=os.getenv("OPTIX_API_KEY", "proj_rLe5i6YI6Ozgl8W8Y5G9"),
-            api_url=os.getenv("OPTIX_API_URL", "https://backend.optixlog.com"),
+            api_url=os.getenv("OPTIX_API_URL", "https://optixlog.com"),
             project="Binary Grating Phase Map",
             run_name=f"binary_grating_gp{args.gp}_gh{args.gh}_{'oddz' if args.oddz else 'evenz'}",
             config=config,

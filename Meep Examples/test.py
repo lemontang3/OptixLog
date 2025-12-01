@@ -15,7 +15,7 @@ import numpy as np
 
 # --- Configuration ---
 api_key = os.getenv("OPTIX_API_KEY", "proj_YOUR_API_KEY_HERE")
-api_url = os.getenv("OPTIX_API_URL", "https://backend.optixlog.com")
+api_url = os.getenv("OPTIX_API_URL", "https://optixlog.com")
 project_name = os.getenv("OPTIX_PROJECT", "OptixLog Demo Project")
 
 print(f"🚀 Starting OptixLog connectivity test for project: {project_name}")

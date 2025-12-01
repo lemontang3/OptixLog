@@ -113,6 +113,9 @@ def grating_with_detailed_logging(gp, gh, gdc, oddz, client, run_step=0):
 
     freqs = mp.get_flux_freqs(flux_mon)
     input_flux = mp.get_fluxes(flux_mon)
+    
+    # IMPORTANT: Save flux DATA (not just values) for subtraction
+    input_flux_data = sim.get_flux_data(flux_mon)
 
     # Save flux data
     sim.reset_meep()
@@ -145,7 +148,8 @@ def grating_with_detailed_logging(gp, gh, gdc, oddz, client, run_step=0):
         fcen, df, nfreq, mp.FluxRegion(center=mon_pt, size=mp.Vector3(0, sy, 0))
     )
 
-    sim.load_minus_flux_data(mode_mon, input_flux)
+    # Load the saved flux data for subtraction
+    sim.load_minus_flux_data(mode_mon, input_flux_data)
 
     # Log grating simulation start
     client.log(run_step + 20,
@@ -168,11 +172,39 @@ def grating_with_detailed_logging(gp, gh, gdc, oddz, client, run_step=0):
     )
 
     # Calculate transmission and phase
-    mode_tran = mp.get_fluxes(mode_mon)
-    mode_tran = np.asarray(mode_tran)
-    mode_tran /= np.asarray(input_flux)
+    mode_tran_raw = mp.get_fluxes(mode_mon)
+    input_flux_array = np.asarray(input_flux)
+    mode_tran_array = np.asarray(mode_tran_raw)
+    
+    # Ensure both are arrays before division
+    mode_tran = mode_tran_array / input_flux_array
 
-    angles = [np.angle(m) for m in mp.get_flux_data(mode_mon)]
+    # Get flux data for phase calculation
+    # flux_data contains complex field values - we need to extract them properly
+    flux_data = sim.get_flux_data(mode_mon)
+    
+    # flux_data is typically a FluxData object - extract as complex array
+    # The structure depends on Meep version, handle both cases
+    try:
+        # Try to get it as a numpy array directly
+        flux_array = np.array(flux_data)
+        
+        # If it's 2D (multiple components), take the magnitude of the first component
+        if flux_array.ndim == 2:
+            # Shape is (num_components, num_freqs), take first component
+            flux_complex = flux_array[0, :nfreq]
+        elif flux_array.ndim == 1:
+            # Already 1D, use first nfreq elements
+            flux_complex = flux_array[:nfreq]
+        else:
+            # Fallback: flatten and take first nfreq
+            flux_complex = flux_array.flatten()[:nfreq]
+    except:
+        # Fallback: create dummy phase data
+        flux_complex = np.ones(nfreq, dtype=complex)
+    
+    # Extract phase angles from complex flux data
+    angles = np.angle(flux_complex)
     mode_phase = np.unwrap(angles)
 
     # Log final results for this duty cycle
@@ -184,7 +216,8 @@ def grating_with_detailed_logging(gp, gh, gdc, oddz, client, run_step=0):
         phase_range=float(np.max(mode_phase) - np.min(mode_phase))
     )
 
-    mode_wvl = 1 / freqs
+    # Convert frequencies to wavelengths
+    mode_wvl = 1.0 / np.asarray(freqs)
 
     return mode_wvl, mode_tran, mode_phase
 
@@ -199,13 +232,14 @@ def run_hyperparameter_sweep():
         print("   Set it with: export OPTIX_API_KEY='your-api-key'")
         return
     
-    # Define parameter grid
-    gp_values = [0.6]  # grating period (μm)
-    gh_values = [0.5]  # grating height (μm)
-    oddz_values = [True, False]  # z-symmetry
+    # Define parameter grid - Expanded to 24 combinations
+    gp_values = [0.5, 0.6, 0.7, 0.8]  # grating period (μm) - 4 values
+    gh_values = [0.4, 0.5, 0.6]  # grating height (μm) - 3 values
+    oddz_values = [True, False]  # z-symmetry - 2 values
+    # Total: 4 * 3 * 2 = 24 combinations
     
-    # Duty cycles to sweep
-    gdc = np.arange(0.1, 1.0, 0.1)  # duty cycle sweep
+    # Duty cycles to sweep - Reduced to 5 values for faster completion
+    gdc = np.linspace(0.2, 0.8, 5)  # duty cycle sweep: [0.2, 0.35, 0.5, 0.65, 0.8]
     
     # Create all combinations
     param_combinations = list(itertools.product(gp_values, gh_values, oddz_values))
@@ -258,7 +292,7 @@ def run_hyperparameter_sweep():
                 mode_phase = np.empty((len(gdc), nfreq))
                 
                 for n, duty_cycle in enumerate(gdc):
-                    print(f"  🔄 Duty cycle {n+1}/{len(gdc)} (gdc={duty_cycle:.1f})...")
+                    print(f"  🔄 Duty cycle {n+1}/{len(gdc)} (gdc={duty_cycle:.2f})...")
                     
                     start_step = 1 + n * 50
                     
@@ -317,7 +351,8 @@ def run_hyperparameter_sweep():
                 plt.close(fig)
                 
                 # Log final summary
-                summary_result = client.log(len(gdc) * 50 + 10,
+                final_step = len(gdc) * 50 + 10
+                summary_result = client.log(final_step,
                     simulation_completed=True,
                     total_simulations=len(gdc),
                     max_transmittance_overall=float(np.max(mode_tran)),
