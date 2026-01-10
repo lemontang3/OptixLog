@@ -402,8 +402,8 @@ This license allows:
 ## Support
 
 - Documentation: [https://optixlog.com/docs](https://optixlog.com/docs)
-- Issues: [GitHub Issues](https://github.com/fluxboard/Optixlog/issues)
-- Community: [Discussions](https://github.com/fluxboard/Optixlog/discussions)
+- Issues: [GitHub Issues](https://github.com/lemontang3/Optixlog/issues)
+- Community: [Discussions](https://github.com/lemontang3/Optixlog/discussions)
 
 ## Citation
 
@@ -412,9 +412,9 @@ If you use OptixLog in your research, please cite:
 ```bibtex
 @software{optixlog2025,
   title = {OptixLog: Experiment Tracking for Photonic Simulations},
-  author = {FluxBoard Team},
+  author = {Coupler Inc.},
   year = {2025},
-  url = {https://github.com/fluxboard/Optixlog}
+  url = {https://github.com/lemontang3/Optixlog}
 }
 ```
 
