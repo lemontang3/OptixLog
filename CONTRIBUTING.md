@@ -1,341 +1,405 @@
-# Contributing to OptixLog Examples
+# Contributing to OptixLog
 
-Thank you for your interest in contributing to the OptixLog Examples repository! This document provides guidelines for contributing new examples, improvements, and bug fixes.
+Thank you for your interest in contributing to OptixLog! We welcome contributions from the community and are excited to work with you.
 
-## 🤝 How to Contribute
+## Table of Contents
 
-### 1. **Fork and Clone**
+- [Code of Conduct](#code-of-conduct)
+- [Getting Started](#getting-started)
+- [Development Setup](#development-setup)
+- [How to Contribute](#how-to-contribute)
+- [Pull Request Process](#pull-request-process)
+- [Coding Standards](#coding-standards)
+- [Testing Guidelines](#testing-guidelines)
+- [Documentation](#documentation)
+- [Community](#community)
+
+## Code of Conduct
+
+This project adheres to a Code of Conduct that all contributors are expected to follow. Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before contributing.
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.8 or higher
+- Git
+- Basic understanding of photonic simulations (helpful but not required)
+- Familiarity with pytest for testing
+
+### Finding Issues to Work On
+
+- Check our [GitHub Issues](https://github.com/fluxboard/Optixlog/issues) page
+- Look for issues labeled `good first issue` for beginner-friendly tasks
+- Issues labeled `help wanted` are actively seeking contributors
+- Feel free to propose new features by opening an issue first
+
+## Development Setup
+
+### 1. Fork and Clone
+
 ```bash
-git clone https://github.com/lemontang3/OptixLog.git
-cd OptixLog
+# Fork the repository on GitHub, then clone your fork
+git clone https://github.com/YOUR_USERNAME/Optixlog.git
+cd Optixlog
 ```
 
-### 2. **Create a Branch**
+### 2. Create a Virtual Environment
+
 ```bash
-git checkout -b feature/your-example-name
+# Create virtual environment
+python -m venv venv
+
+# Activate it
+# On macOS/Linux:
+source venv/bin/activate
+# On Windows:
+venv\Scripts\activate
 ```
 
-### 3. **Make Your Changes**
-Follow the guidelines below for adding new examples or improving existing ones.
+### 3. Install Dependencies
 
-### 4. **Test Your Changes**
 ```bash
-# Run your example to make sure it works
-python examples/your_example.py
+# Install the SDK in editable mode with development dependencies
+cd sdk
+pip install -e .
 
-# Run the test suite (if available)
-pytest tests/
+# Install test dependencies
+pip install pytest pytest-cov
+
+# Install optional dependencies for full functionality
+pip install mpi4py meep tidy3d rich matplotlib pillow numpy
 ```
 
-### 5. **Submit a Pull Request**
-Create a pull request with a clear description of your changes.
+### 4. Verify Installation
 
-## 📝 Adding New Examples
+```bash
+# Run tests to ensure everything is set up correctly
+pytest
+```
 
-### File Naming Convention
-- Use numbered prefixes: `##_descriptive_name.py`
-- Use underscores for spaces
-- Be descriptive but concise
+## How to Contribute
 
-Examples:
-- `08_photonic_crystal.py`
-- `12_metasurface_design.py`
-- `15_multi_parameter_sweep.py`
+### Types of Contributions
 
-### Example Template
+We welcome many types of contributions:
+
+- **Bug fixes** - Fix issues or incorrect behavior
+- **New features** - Add new logging capabilities, integrations, or utilities
+- **Documentation** - Improve README, docstrings, or add examples
+- **Tests** - Add test coverage or improve existing tests
+- **Performance** - Optimize slow operations
+- **Integrations** - Add support for new simulation frameworks
+- **Examples** - Add example scripts demonstrating usage
+
+### Before You Start
+
+1. **Check existing issues and PRs** - Someone might already be working on it
+2. **Open an issue first** for significant changes to discuss the approach
+3. **Keep changes focused** - One PR should address one issue or feature
+4. **Write tests** - All new code should include tests
+
+## Pull Request Process
+
+### 1. Create a Branch
+
+```bash
+# Create a descriptive branch name
+git checkout -b feature/add-lumerical-support
+# or
+git checkout -b fix/nan-validation-edge-case
+```
+
+### 2. Make Your Changes
+
+- Write clean, readable code following our [coding standards](#coding-standards)
+- Add tests for new functionality
+- Update documentation as needed
+- Ensure all tests pass
+
+### 3. Commit Your Changes
+
+We follow conventional commit messages:
+
+```bash
+# Format: <type>(<scope>): <description>
+
+git commit -m "feat(client): add support for Lumerical simulations"
+git commit -m "fix(validators): handle edge case in NaN detection"
+git commit -m "docs(readme): add example for batch logging"
+git commit -m "test(query): add tests for compare_runs function"
+```
+
+**Types:**
+- `feat` - New feature
+- `fix` - Bug fix
+- `docs` - Documentation changes
+- `test` - Adding or updating tests
+- `refactor` - Code refactoring
+- `perf` - Performance improvements
+- `chore` - Maintenance tasks
+
+### 4. Push and Create Pull Request
+
+```bash
+git push origin your-branch-name
+```
+
+Then create a pull request on GitHub with:
+
+- **Clear title** - Descriptive and concise
+- **Description** - What changes were made and why
+- **Linked issues** - Reference related issues (e.g., "Fixes #123")
+- **Testing** - Describe how you tested the changes
+- **Screenshots** - If applicable (UI changes, visualizations)
+
+### 5. Code Review
+
+- Respond to feedback promptly
+- Make requested changes in new commits (don't force push during review)
+- Once approved, a maintainer will merge your PR
+
+## Coding Standards
+
+### Python Style
+
+- Follow [PEP 8](https://pep8.org/) style guide
+- Use meaningful variable and function names
+- Maximum line length: 100 characters
+- Use type hints where appropriate
 
 ```python
-"""
-[Example Name] with OptixLog
+# Good
+def log_metric(self, step: int, metric_name: str, value: float) -> MetricResult:
+    """Log a single metric value at a given step."""
+    if math.isnan(value):
+        raise ValidationError(f"Metric '{metric_name}' contains NaN value")
+    return self._send_metric(step, metric_name, value)
 
-Description: Brief description of what this simulation does
-Physics: Explanation of the underlying physics
-
-Features demonstrated:
-- Context managers for automatic cleanup
-- log_matplotlib() for one-line plotting  
-- log_array_as_image() for direct array visualization
-- Return values with URLs
-- Colored console output
-
-Author: Your Name
-Date: YYYY-MM-DD
-"""
-
-import os
-import optixlog
-import meep as mp
-import matplotlib.pyplot as plt
-import numpy as np
-import numpy as np
-import matplotlib.pyplot as plt
-
-def main():
-    """Main simulation function with OptixLog tracking"""
-    
-    # Get API key
-    api_key = os.getenv("OPTIX_API_KEY")
-    if not api_key:
-        print("❌ Error: OPTIX_API_KEY not set!")
-        return
-    
-    # Use context manager for automatic cleanup
-    with optixlog.run(
-        run_name="example_name",
-        project="MyProject",
-        config={
-            "parameter1": value1,
-            "parameter2": value2,
-            "description": "Brief description"
-        },
-        create_project_if_not_exists=True
-    ) as client:
-        
-        print(f"✅ Run initialized: {client.run_id}")
-        
-        # Your simulation code here
-        sim = mp.Simulation(...)
-        sim.run(...)
-        
-        # Get return values for feedback
-        result = client.log(step=0, metric1=value1, metric2=value2)
-        if result and result.success:
-            print(f"✓ Metrics logged: {result.url}")
-        
-        # Get field data
-        field_data = sim.get_array(...)
-        
-        # Log arrays directly as images
-        client.log_array_as_image("field_plot", field_data, cmap='hot')
-        
-        # Create matplotlib plot
-        fig, ax = plt.subplots()
-        ax.plot(x, y)
-        ax.set_title("My Plot")
-        
-        # One line to log the plot!
-        client.log_matplotlib("my_plot", fig)
-        plt.close(fig)
-        
-    # Context manager handles all cleanup automatically!
-
-if __name__ == "__main__":
-    main()
+# Avoid
+def lm(s, mn, v):
+    if math.isnan(v):
+        raise ValidationError("nan")
+    return self._sm(s, mn, v)
 ```
 
-## 🎨 OptixLog Best Practices
+### Code Organization
 
-### ✅ DO Use These Features
-
-**1. Context Managers (Required for all examples)**
-```python
-# ✅ CORRECT - Use context manager
-with optixlog.run("experiment", config={...}) as client:
-    # Your code here
-    pass
-
-# ❌ WRONG - Don't use init() without context manager
-client = optixlog.init(...)  # Not recommended - use context manager
-```
-
-**2. Convenience Helpers (Eliminate boilerplate)**
-```python
-# ✅ CORRECT - One line!
-client.log_matplotlib("plot", fig)
-
-# ❌ WRONG - Manual save/upload/cleanup
-plt.savefig("plot.png")
-client.log_file("plot", "plot.png", "image/png")
-os.remove("plot.png")  # Unnecessary boilerplate!
-```
-
-**3. Array Visualization**
-```python
-# ✅ CORRECT - Direct array logging
-client.log_array_as_image("field", field_array, cmap='RdBu')
-
-# ❌ WRONG - Manual conversion with temporary files
-plt.imshow(field_array)
-plt.savefig("field.png")
-client.log_file("field", "field.png")
-os.remove("field.png")
-```
-
-**4. Return Values**
-```python
-# ✅ CORRECT - Use return values
-result = client.log(step=0, loss=0.5)
-if result and result.success:
-    print(f"✓ Logged: {result.url}")
-
-# ❌ ACCEPTABLE but not ideal - Ignoring feedback
-client.log(step=0, loss=0.5)  # Works, but you miss out on useful feedback
-```
-
-**5. Simple Data Plots**
-```python
-# ✅ CORRECT - Use helper
-client.log_plot("spectrum", frequencies, transmission, 
-                 title="Transmission Spectrum")
-
-# ❌ WRONG - Manual matplotlib handling
-fig, ax = plt.subplots()
-ax.plot(frequencies, transmission)
-plt.savefig("spectrum.png")
-client.log_file("spectrum", "spectrum.png")
-```
-
-### ❌ DON'T Do These
-
-1. **Don't use manual file cleanup** - Context managers handle it
-2. **Don't specify api_url explicitly** - SDK defaults to correct URL
-3. **Don't use old plt.savefig() → log_file() pattern** - Use log_matplotlib()
-4. **Don't create temporary files** - Use helpers
-5. **Don't ignore return values** - They provide useful feedback
-
-### 📊 Example Comparison
-
-**WITHOUT Convenience Helpers - 15 lines:**
-```python
-client = optixlog.init(api_key=..., project=...)
-
-client.log(step=0, loss=0.5)
-
-plt.figure()
-plt.plot(x, y)
-path = "plot.png"
-plt.savefig(path)
-plt.close()
-
-from PIL import Image
-img = Image.open(path)
-client.log_image("plot", img)
-os.remove(path)
-```
-
-**WITH Convenience Helpers - 7 lines:**
-```python
-with optixlog.run("experiment") as client:
-    result = client.log(step=0, loss=0.5)
-    
-    plt.figure()
-    plt.plot(x, y)
-    client.log_matplotlib("plot", plt.gcf())
-```
-
-**Result: 53% less code + cleaner!**
-
-### Documentation Requirements
-
-Each example should include:
-
-1. **Header Comment Block** with:
-   - Descriptive title
-   - Brief description of the simulation
-   - Physics explanation
-   - Usage instructions
-   - Author and date
-
-2. **Inline Comments** explaining:
-   - Key parameters and their physical meaning
-   - Important code sections
-   - OptixLog integration points
-
-3. **README Section** (add to main README.md):
-   - Brief description
-   - Key parameters
-   - Expected results
-   - Any special requirements
-
-### Code Quality Standards
-
-- **Python Style**: Follow PEP 8
-- **Imports**: Group and sort imports properly
-- **Error Handling**: Include try-catch blocks for OptixLog operations
-- **Documentation**: Add docstrings for functions
-- **Testing**: Test with different parameter values
-
-### Example Categories
-
-Organize examples by complexity and application:
-
-1. **Quick Start** (01-03): Basic OptixLog integration
-2. **1D Simulations** (04-06): One-dimensional problems
-3. **2D Simulations** (07-09): Two-dimensional problems
-4. **3D Simulations** (10-12): Three-dimensional problems
-5. **Advanced** (13-15): Complex multi-parameter studies
-
-## 🐛 Bug Reports
-
-When reporting bugs, please include:
-
-1. **Example file** that's causing the issue
-2. **Error message** (full traceback)
-3. **Environment details**:
-   - Python version
-   - Meep version
-   - Operating system
-4. **Steps to reproduce**
-5. **Expected vs actual behavior**
-
-## 💡 Feature Requests
-
-For new features or example requests:
-
-1. **Check existing issues** first
-2. **Describe the use case** clearly
-3. **Provide example code** if possible
-4. **Explain the expected benefit**
-
-## 📋 Review Process
-
-All contributions will be reviewed for:
-
-- **Code quality** and style
-- **Documentation** completeness
-- **Functionality** and correctness
-- **OptixLog integration** best practices
-- **Educational value** for users
-
-## 🎯 Best Practices
-
-### OptixLog Integration
-
-1. **Always use try-catch** around OptixLog operations
-2. **Provide fallback behavior** if OptixLog is unavailable
-3. **Log meaningful metrics** with descriptive names
-4. **Upload relevant artifacts** (plots, data files)
-5. **Use descriptive run names** and configuration
-
-### Simulation Best Practices
-
-1. **Use appropriate resolution** for the problem
-2. **Include convergence checks** where applicable
-3. **Provide parameter explanations** in comments
-4. **Include visualization** of results
-5. **Make examples reproducible** with fixed seeds where needed
+- **Keep functions focused** - One function, one purpose
+- **Avoid deep nesting** - Extract nested logic into helper functions
+- **Use early returns** - Reduce nesting with guard clauses
+- **DRY principle** - Don't repeat yourself
 
 ### Documentation
 
-1. **Write clear docstrings** for all functions
-2. **Include physics explanations** for complex simulations
-3. **Provide usage examples** in comments
-4. **Update README** when adding new examples
-5. **Include expected results** and interpretation
+- Add docstrings to all public functions and classes
+- Use Google-style docstrings
 
-## 🚀 Getting Help
+```python
+def compare_runs(run_ids: List[str], api_key: str) -> ComparisonResult:
+    """Compare metrics across multiple runs.
+
+    Args:
+        run_ids: List of run IDs to compare
+        api_key: API key for authentication
+
+    Returns:
+        ComparisonResult containing aggregated metrics and statistics
+
+    Raises:
+        ValidationError: If run_ids is empty or contains invalid IDs
+        APIError: If the API request fails
+
+    Example:
+        >>> comparison = compare_runs(['run_1', 'run_2'], api_key='key')
+        >>> print(comparison.best_run_id)
+    """
+    # Implementation...
+```
+
+## Testing Guidelines
+
+### Writing Tests
+
+- Place tests in the `tests/` directory
+- Test files should mirror the structure of the SDK
+- Name test files `test_*.py`
+- Name test functions `test_*`
+
+### Test Categories
+
+Use pytest markers to categorize tests:
+
+```python
+import pytest
+
+@pytest.mark.unit
+def test_validation_rejects_nan():
+    """Unit test for NaN validation."""
+    with pytest.raises(ValidationError):
+        validate_metric(float('nan'))
+
+@pytest.mark.integration
+def test_end_to_end_logging():
+    """Integration test for complete logging workflow."""
+    client = Optixlog(api_key="test_key")
+    # ...
+
+@pytest.mark.slow
+def test_large_batch_upload():
+    """Test uploading 10,000 metrics."""
+    # ...
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run specific category
+pytest -m unit
+pytest -m integration
+
+# Run with coverage
+pytest --cov=optixlog --cov-report=html
+
+# Run specific test file
+pytest tests/test_validators.py
+
+# Run specific test
+pytest tests/test_validators.py::test_validation_rejects_nan
+```
+
+### Test Coverage
+
+- Aim for >80% code coverage
+- All new features must include tests
+- Bug fixes should include regression tests
+
+## Documentation
+
+### Code Documentation
+
+- Add docstrings to all public APIs
+- Include examples in docstrings where helpful
+- Keep docstrings up to date with code changes
+
+### README and Guides
+
+- Update README.md if you add new features
+- Add examples to demonstrate new functionality
+- Update API reference if signatures change
+
+### Inline Comments
+
+Use comments to explain **why**, not **what**:
+
+```python
+# Good
+# Skip logging on non-master ranks to avoid duplicate API calls
+if self.rank != 0:
+    return None
+
+# Avoid (comment explains obvious code)
+# Check if rank is not 0
+if self.rank != 0:
+    return None
+```
+
+## Project-Specific Guidelines
+
+### MPI Compatibility
+
+When adding features, ensure they work correctly in MPI environments:
+
+```python
+# Always check rank before API calls
+if self.rank == 0:
+    self._make_api_call()
+
+# Non-master ranks should return early or return None
+if self.rank != 0:
+    return None
+```
+
+### Validation
+
+Add validation for user inputs:
+
+```python
+from optixlog.validators import validate_metric, ValidationError
+
+def log(self, step: int, **metrics):
+    for key, value in metrics.items():
+        validate_metric(value, metric_name=key)  # Raises ValidationError if invalid
+```
+
+### Error Handling
+
+- Use custom exceptions from `validators.py` (e.g., `ValidationError`)
+- Provide helpful error messages with context
+- Don't silence exceptions without good reason
+
+### Backward Compatibility
+
+- Maintain backward compatibility when possible
+- Deprecate features gracefully before removing
+- Document breaking changes clearly in PR description
+
+## Release Process
+
+(For maintainers)
+
+1. Update version in `pyproject.toml` and `setup.py`
+2. Update CHANGELOG.md with release notes
+3. Create a git tag: `git tag -a v0.3.0 -m "Release v0.3.0"`
+4. Push tag: `git push origin v0.3.0`
+5. Build and publish to PyPI: `python -m build && twine upload dist/*`
+
+## Community
+
+### Communication Channels
+
+- **GitHub Issues** - Bug reports, feature requests
+- **GitHub Discussions** - Questions, ideas, general discussion
+- **Pull Requests** - Code review and collaboration
+
+### Getting Help
 
 If you need help:
 
-- **Open an issue** for questions
-- **Join discussions** in GitHub Discussions
-- **Email**: tanmayg@gatech.edu
-- **Check documentation**: https://optixlog.com/docs
+1. Check the [README](README.md) and documentation
+2. Search existing issues and discussions
+3. Ask in [GitHub Discussions](https://github.com/fluxboard/Optixlog/discussions)
+4. Open a new issue if you've found a bug
 
-## 📄 License
+### Recognition
 
-By contributing, you agree that your contributions will be available for educational and example purposes.
+Contributors will be:
+- Listed in release notes
+- Credited in relevant documentation
+- Added to CONTRIBUTORS.md (if we create one)
+
+## License
+
+By contributing to OptixLog, you agree that your contributions will be licensed under the GNU Lesser General Public License v2.1. See [LICENSE](LICENSE) for details.
+
+This means:
+- Your code will be open source under LGPL v2.1
+- Others can use your contributions in both open and proprietary projects
+- Modifications to your code must remain open source
+
+## Questions?
+
+Don't hesitate to ask questions! We're here to help:
+
+- Open an issue labeled `question`
+- Start a discussion in GitHub Discussions
+- Comment on relevant issues or PRs
+
+Thank you for contributing to OptixLog!
 
 ---
 
-Thank you for contributing to OptixLog Examples! 🎉
+**Happy Coding!** We appreciate your time and effort in making OptixLog better for the photonics simulation community.

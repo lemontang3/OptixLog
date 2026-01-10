@@ -1,0 +1,126 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "optixlog"
+version = "0.2.0"
+description = "A Python SDK for logging and tracking photonic simulation experiments"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "LGPL-2.1"}
+authors = [
+    {name = "FluxBoard Team", email = "support@fluxboard.com"}
+]
+keywords = [
+    "photonics",
+    "simulation",
+    "fdtd",
+    "experiment-tracking",
+    "logging",
+    "meep",
+    "tidy3d",
+    "mpi",
+    "scientific-computing"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "requests>=2.25.0",
+    "numpy>=1.19.0",
+    "matplotlib>=3.3.0",
+    "pillow>=8.0.0",
+    "rich>=10.0.0",
+]
+
+[project.optional-dependencies]
+mpi = ["mpi4py>=3.0.0"]
+meep = ["meep>=1.18.0"]
+tidy3d = ["tidy3d>=2.0.0"]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.10.0",
+    "black>=21.0",
+    "flake8>=3.8.0",
+    "mypy>=0.900",
+]
+all = [
+    "mpi4py>=3.0.0",
+    "meep>=1.18.0",
+    "tidy3d>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://optixlog.com"
+Documentation = "https://optixlog.com/docs"
+Repository = "https://github.com/fluxboard/Optixlog"
+"Bug Reports" = "https://github.com/fluxboard/Optixlog/issues"
+Discussions = "https://github.com/fluxboard/Optixlog/discussions"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow tests that take more than a few seconds",
+]
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+    "-v"
+]
+
+[tool.coverage.run]
+source = ["optixlog"]
+omit = ["*/tests/*", "*/test_*.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true

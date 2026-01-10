@@ -1,0 +1,14 @@
+# Include license and documentation
+include LICENSE
+include README.md
+include CONTRIBUTING.md
+include pytest.ini
+include pyproject.toml
+
+# Include all test files
+recursive-include tests *.py
+
+# Exclude compiled Python files
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store

@@ -1,406 +1,430 @@
-# OptixLog Examples
+# OptixLog SDK
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
-[![Meep](https://img.shields.io/badge/Meep-FDTD-green.svg)](https://meep.readthedocs.io)
-[![OptixLog](https://img.shields.io/badge/OptixLog-AI%20Powered-orange.svg)](https://optixlog.com)
+[![License: LGPL v2.1](https://img.shields.io/badge/License-LGPL%20v2.1-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Version](https://img.shields.io/badge/version-0.2.0-green.svg)](https://github.com/fluxboard/Optixlog)
 
-> **Comprehensive simulation examples for OptixLog** - AI-powered experiment tracking for photonic simulations
+A Python SDK for logging and tracking photonic simulation experiments. OptixLog provides a fluent, intuitive API for managing experiment runs, logging metrics, uploading visualizations, and tracking simulation parameters with automatic MPI support for distributed computing environments.
 
-This repository contains detailed, production-ready examples demonstrating how to integrate OptixLog with various photonic simulation frameworks. Track your simulations, log metrics, and visualize results with ease.
+## Features
 
-## 🚀 Quick Start
+- **Fluent API** - Chainable, intuitive interface for experiment tracking
+- **Rich Logging** - Log metrics, images, plots, histograms, arrays, and arbitrary files
+- **MPI Support** - Automatic detection and handling of distributed computing environments (OpenMPI, Intel MPI, MPICH, mpi4py)
+- **Photonic Simulation Integration** - Built-in support for MEEP, Tidy3D, and other FDTD frameworks
+- **Batch Operations** - Efficient bulk logging with automatic retry logic
+- **Type-Safe** - Comprehensive input validation with helpful error messages
+- **Zero Configuration** - Works out of the box with sensible defaults
+
+## Installation
+
+### Basic Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/lemontang3/OptixLog.git
-cd OptixLog
-
-# Install OptixLog SDK
 pip install optixlog
-
-# Set your API key
-export OPTIX_API_KEY="proj_your_api_key_here"
-
-# Run your first example
-python demo.py
 ```
 
-## 📋 Table of Contents
-
-- [Installation](#installation)
-- [Examples Overview](#examples-overview)
-- [Framework Support](#framework-support)
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
-- [Support](#support)
-
-## 🔧 Installation
-
-### Prerequisites
-
-- Python 3.8+
-- Meep (for FDTD simulations)
-- NumPy, Matplotlib (for data analysis)
-- OptixLog (for experiment tracking)
-
-### Setup
+### Development Installation
 
 ```bash
-# Install Meep (choose your platform)
-# macOS with Homebrew
-brew install meep
-
-# Ubuntu/Debian
-sudo apt-get install meep meep-dev
-
-# Install Python dependencies
-pip install numpy matplotlib scipy
-
-# Install OptixLog
-pip install http://optixlog.com/optixlog-0.0.1-py3-none-any.whl
+git clone https://github.com/fluxboard/Optixlog.git
+cd Optixlog/sdk
+pip install -e .
 ```
 
-## 🎯 Examples Overview
+### Optional Dependencies
 
-This repository contains **85+ comprehensive examples** covering a wide range of photonic simulations with OptixLog integration.
+For full functionality, install optional dependencies:
 
-[![GitHub](https://img.shields.io/badge/GitHub-View%20Examples-blue?logo=github)](https://github.com/lemontang3/OptixLog)
-[![GitHub Stars](https://img.shields.io/github/stars/lemontang3/OptixLog?style=social)](https://github.com/lemontang3/OptixLog/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/lemontang3/OptixLog?style=social)](https://github.com/lemontang3/OptixLog/network/members)
+```bash
+# For MPI support
+pip install mpi4py
 
-### 🚀 **Quick Start Examples**
-- [`quick_start.py`](Meep%20Examples/quick_start.py) - Basic OptixLog integration and logging
+# For photonic simulation frameworks
+pip install meep
+pip install tidy3d
 
-### 🔬 **Basic Meep Simulations**
-- [`straight_waveguide.py`](Meep%20Examples/straight_waveguide.py) - Simple straight waveguide with field visualization
-- [`absorbed_1d.py`](Meep%20Examples/absorbed_1d.py) - 1D absorption simulation in aluminum
-- [`bend_flux.py`](Meep%20Examples/bend_flux.py) - 90-degree waveguide bend transmission analysis
-- [`binary_grating_phasemap.py`](Meep%20Examples/binary_grating_phasemap.py) - Binary grating phase map generation
-- [`binary_grating_analysis.py`](Meep%20Examples/binary_grating_analysis.py) - Advanced binary grating diffraction analysis
-- [`ring_resonator.py`](Meep%20Examples/ring_resonator.py) - Ring resonator mode calculation and analysis
+# For enhanced console output
+pip install rich
+```
 
-### 🌐 **Waveguide & Transmission Examples**
-- [`waveguide_crossing.py`](Meep%20Examples/waveguide_crossing.py) - Waveguide crossing analysis
-- [`coupler.py`](Meep%20Examples/coupler.py) - Optical coupler simulation
-- [`bent-waveguide.py`](Meep%20Examples/bent-waveguide.py) - Bent waveguide analysis
-- [`ring-cyl.py`](Meep%20Examples/ring-cyl.py) - Cylindrical ring resonator
-- [`ring_gds.py`](Meep%20Examples/ring_gds.py) - Ring resonator with GDS integration
+## Quick Start
 
-### 📊 **Grating & Diffraction Examples**
-- [`zone_plate.py`](Meep%20Examples/zone_plate.py) - Zone plate focusing analysis
-- [`polarization_grating.py`](Meep%20Examples/polarization_grating.py) - Polarization grating simulation
-- [`binary_grating_oblique.py`](Meep%20Examples/binary_grating_oblique.py) - Oblique binary grating
-- [`binary_grating_n2f.py`](Meep%20Examples/binary_grating_n2f.py) - Near-to-far field analysis
-- [`grating2d_triangular_lattice.py`](Meep%20Examples/grating2d_triangular_lattice.py) - 2D triangular lattice grating
-- [`binary_grating_phasemap_advanced.py`](Meep%20Examples/binary_grating_phasemap_advanced.py) - Advanced binary grating phase map analysis
-
-### 🔬 **Scattering & Radiation Examples**
-- [`cherenkov-radiation.py`](Meep%20Examples/cherenkov-radiation.py) - Cherenkov radiation analysis
-- [`dipole_in_vacuum_cyl_off_axis.py`](Meep%20Examples/dipole_in_vacuum_cyl_off_axis.py) - Off-axis dipole radiation
-- [`differential_cross_section.py`](Meep%20Examples/differential_cross_section.py) - Differential scattering cross-section
-- [`antenna-radiation.py`](Meep%20Examples/antenna-radiation.py) - Antenna radiation pattern
-- [`point_dipole_cyl.py`](Meep%20Examples/point_dipole_cyl.py) - Point dipole in cylindrical geometry
-- [`cylinder_cross_section.py`](Meep%20Examples/cylinder_cross_section.py) - Cylinder scattering cross-section
-- [`mie_scattering.py`](Meep%20Examples/mie_scattering.py) - Mie scattering analysis
-
-### 🏗️ **MPB (Eigenmode) Examples**
-- [`mpb_hole_slab.py`](Meep%20Examples/mpb_hole_slab.py) - Holey slab eigenmode analysis
-- [`mpb_tri_holes.py`](Meep%20Examples/mpb_tri_holes.py) - Triangular hole photonic crystal
-- [`mpb_bragg.py`](Meep%20Examples/mpb_bragg.py) - Bragg reflector analysis
-- [`mpb_strip.py`](Meep%20Examples/mpb_strip.py) - Strip waveguide eigenmodes
-- [`mpb_sq_rods.py`](Meep%20Examples/mpb_sq_rods.py) - Square rod photonic crystal
-- [`mpb_tri_rods.py`](Meep%20Examples/mpb_tri_rods.py) - Triangular rod photonic crystal
-- [`mpb_line_defect.py`](Meep%20Examples/mpb_line_defect.py) - Line defect in photonic crystal
-- [`mpb_tutorial.py`](Meep%20Examples/mpb_tutorial.py) - MPB tutorial examples
-- [`mpb_diamond.py`](Meep%20Examples/mpb_diamond.py) - Diamond structure analysis
-- [`mpb_honey_rods.py`](Meep%20Examples/mpb_honey_rods.py) - Honeycomb rod structure
-- [`parallel-wvgs-mpb.py`](Meep%20Examples/parallel-wvgs-mpb.py) - Parallel waveguides MPB analysis
-- [`mpb_bragg_sine.py`](Meep%20Examples/mpb_bragg_sine.py) - Sine-modulated Bragg structure
-- [`mpb_data_analysis.py`](Meep%20Examples/mpb_data_analysis.py) - MPB data analysis techniques
-
-### 🎯 **Cavity & Resonator Examples**
-- [`holey-wvg-cavity.py`](Meep%20Examples/holey-wvg-cavity.py) - Holey waveguide cavity
-- [`cavity-farfield.py`](Meep%20Examples/cavity-farfield.py) - Cavity far-field analysis
-- [`planar_cavity_ldos.py`](Meep%20Examples/planar_cavity_ldos.py) - Planar cavity LDOS analysis
-- [`cavity_arrayslice.py`](Meep%20Examples/cavity_arrayslice.py) - Cavity array slice analysis
-- [`ring-mode-overlap.py`](Meep%20Examples/ring-mode-overlap.py) - Ring resonator mode overlap
-- [`metal-cavity-ldos.py`](Meep%20Examples/metal-cavity-ldos.py) - Metal cavity LDOS analysis
-
-### 🎛️ **Adjoint Optimization Examples**
-- [`mode_converter.py`](Meep%20Examples/mode_converter.py) - Mode converter optimization
-- [`binary_grating_levelset.py`](Meep%20Examples/binary_grating_levelset.py) - Level set binary grating optimization
-- [`multilayer_opt.py`](Meep%20Examples/multilayer_opt.py) - Multilayer optimization
-
-### 🔧 **Advanced & Specialized Examples**
-- [`perturbation_theory.py`](Meep%20Examples/perturbation_theory.py) - Perturbation theory analysis
-- [`eps_fit_lorentzian.py`](Meep%20Examples/eps_fit_lorentzian.py) - Lorentzian material fitting
-- [`holey-wvg-bands.py`](Meep%20Examples/holey-wvg-bands.py) - Holey waveguide band structure
-- [`gaussian-beam.py`](Meep%20Examples/gaussian-beam.py) - Gaussian beam propagation
-- [`parallel-wvgs-force.py`](Meep%20Examples/parallel-wvgs-force.py) - Parallel waveguide force analysis
-- [`3rd-harm-1d.py`](Meep%20Examples/3rd-harm-1d.py) - Third harmonic generation
-- [`extraction_eff_ldos.py`](Meep%20Examples/extraction_eff_ldos.py) - Extraction efficiency and LDOS
-- [`mode_coeff_phase.py`](Meep%20Examples/mode_coeff_phase.py) - Mode coefficient phase analysis
-- [`absorbed_power_density.py`](Meep%20Examples/absorbed_power_density.py) - Absorbed power density analysis
-- [`absorber-1d.py`](Meep%20Examples/absorber-1d.py) - 1D absorber analysis
-- [`metasurface_lens.py`](Meep%20Examples/metasurface_lens.py) - Metasurface lens design
-- [`chirped_pulse.py`](Meep%20Examples/chirped_pulse.py) - Chirped pulse propagation
-- [`multilevel-atom.py`](Meep%20Examples/multilevel-atom.py) - Multilevel atom interaction
-- [`disc_extraction_efficiency.py`](Meep%20Examples/disc_extraction_efficiency.py) - Disc extraction efficiency
-- [`stochastic_emitter_line.py`](Meep%20Examples/stochastic_emitter_line.py) - Stochastic emitter line analysis
-- [`oblique-planewave.py`](Meep%20Examples/oblique-planewave.py) - Oblique plane wave analysis
-- [`stochastic_emitter_reciprocity.py`](Meep%20Examples/stochastic_emitter_reciprocity.py) - Stochastic emitter reciprocity
-- [`mode-decomposition.py`](Meep%20Examples/mode-decomposition.py) - Mode decomposition analysis
-- [`antenna_pec_ground_plane.py`](Meep%20Examples/antenna_pec_ground_plane.py) - PEC ground plane antenna
-- [`finite_grating.py`](Meep%20Examples/finite_grating.py) - Finite grating analysis
-- [`refl-quartz.py`](Meep%20Examples/refl-quartz.py) - Quartz reflection analysis
-- [`solve-cw.py`](Meep%20Examples/solve-cw.py) - Continuous wave solver
-- [`wvg-src.py`](Meep%20Examples/wvg-src.py) - Waveguide source analysis
-- [`dipole_in_vacuum_1D.py`](Meep%20Examples/dipole_in_vacuum_1D.py) - 1D dipole in vacuum
-- [`stochastic_emitter.py`](Meep%20Examples/stochastic_emitter.py) - Stochastic emitter analysis
-- [`material-dispersion.py`](Meep%20Examples/material-dispersion.py) - Material dispersion analysis
-- [`disc_radiation_pattern.py`](Meep%20Examples/disc_radiation_pattern.py) - Disc radiation pattern
-- [`faraday-rotation.py`](Meep%20Examples/faraday-rotation.py) - Faraday rotation analysis
-- [`phase_in_material.py`](Meep%20Examples/phase_in_material.py) - Phase analysis in materials
-- [`diffracted_planewave.py`](Meep%20Examples/diffracted_planewave.py) - Diffracted plane wave
-- [`perturbation_theory_2d.py`](Meep%20Examples/perturbation_theory_2d.py) - 2D perturbation theory
-
-### 🔮 **Future Framework Examples**
-- **Tidy3D Examples**: Coming soon - waveguide simulations, FOM tracking
-- **Lumerical Examples**: Coming soon - FDTD/MODE integration  
-- **COMSOL Examples**: Coming soon - data import and logging
-
-## 🛠 Framework Support
-
-| Framework | Examples | Status |
-|-----------|----------|--------|
-| **Meep** | 85+ examples (FDTD, MPB, Optimization) | ✅ Complete |
-| **Tidy3D** | Coming Soon | 🚧 Planned |
-| **Lumerical** | Coming Soon | 🚧 Planned |
-| **COMSOL** | Coming Soon | 🚧 Planned |
-
-### 📊 **Meep Coverage**
-- **Basic Simulations**: Waveguides, bends, gratings, cavities
-- **Advanced Physics**: Scattering, radiation, nonlinear effects
-- **MPB Integration**: Photonic crystals, band structures, eigenmodes
-- **Optimization**: Adjoint methods, level-set optimization
-- **Specialized**: Stochastic emitters, material dispersion, perturbation theory
-
-## 🎮 Getting Started
-
-### 1. **Basic Integration**
+### 1. Initialize the Client
 
 ```python
-import optixlog
-import meep as mp
-import numpy as np
+from optixlog import Optixlog
 
-# Use context manager (auto-cleanup!)
-with optixlog.run("my_first_simulation", 
-                   config={"resolution": 30, "material": "silicon"}) as client:
-    
-    # Your simulation code
-    sim = mp.Simulation(...)
-    
-    # Log metrics during simulation
-    for step in range(100):
-        sim.run(until=1)
-        field = sim.get_array(...)
-        power = float(np.mean(np.abs(field)**2))
-        
-        # Get return values!
-        result = client.log(step=step, power=power)
-        if result and step % 10 == 0:
-            print(f"✓ Step {step}: logged successfully")
-    
-    # Zero-boilerplate plot logging!
-    client.log_array_as_image("field_plot", field, cmap='RdBu')
+# Initialize with API key
+client = Optixlog(api_key="your_api_key_here")
+
+# Or use environment variable OPTIXLOG_API_KEY
+client = Optixlog()
 ```
 
-### 2. **Parameter Sweeps**
+### 2. Create a Project and Run
 
 ```python
-# Sweep over multiple parameters
-wavelengths = np.linspace(0.4, 0.7, 20)
-for wavelength in wavelengths:
-    # Context manager per sweep
-    with optixlog.run(f"sweep_{wavelength:.2f}",
-                       config={"wavelength": wavelength}) as client:
-        
-        # Run simulation for this wavelength
-        # ... simulation code ...
-        
-        # Log with return values
-        result = client.log(transmission=transmission, reflection=reflection)
-        print(f"✓ Logged sweep at λ={wavelength:.2f}: {result.url}")
-        
-        # Use convenience helpers
-        client.log_plot("spectrum", frequencies, transmission, 
-                        title=f"Transmission (λ={wavelength:.2f})")
+# Get or create a project
+project = client.project(name="photonic_waveguide_optimization")
+
+# Start a new run
+run = project.run(
+    name="sweep_width_500nm",
+    config={
+        "waveguide_width": 500,
+        "wavelength": 1550,
+        "simulation_time": 1000,
+        "resolution": 20
+    }
+)
 ```
 
-### 3. **Artifact Management**
+### 3. Log Metrics
+
+```python
+# Log scalar metrics
+run.log(step=0, transmission=0.85, reflection=0.12, loss=0.03)
+run.log(step=1, transmission=0.88, reflection=0.10, loss=0.02)
+
+# Log multiple metrics at once
+run.log(
+    step=100,
+    transmission=0.92,
+    reflection=0.06,
+    loss=0.02,
+    convergence=0.001
+)
+```
+
+### 4. Log Visualizations
 
 ```python
 import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
 
-with optixlog.run("artifact_demo") as client:
-    # Create plot
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(frequencies, transmission)
-    ax.set_xlabel('Frequency')
-    ax.set_ylabel('Transmission')
-    
-    # One line to log matplotlib figures!
-    result = client.log_matplotlib("transmission_spectrum", fig)
-    print(f"✓ Plot uploaded: {result.url}")
-    
-    # Auto-detects content type
-    client.log_file("data", "results/data.csv")
-    
-    # Or use helper to create plot from data
-    client.log_plot("quick_plot", x_data, y_data, title="My Plot")
+# Log matplotlib figures
+fig, ax = plt.subplots()
+ax.plot(wavelengths, transmission_spectrum)
+ax.set_xlabel("Wavelength (nm)")
+ax.set_ylabel("Transmission")
+run.log_matplotlib("transmission_spectrum", fig)
+
+# Log images
+image = Image.open("simulation_field.png")
+run.log_image("electric_field", image)
+
+# Log numpy arrays as heatmaps
+field_data = np.random.rand(100, 100)
+run.log_array_as_image("field_distribution", field_data)
+
+# Create plots directly
+run.log_plot(
+    "optimization_curve",
+    x=[0, 1, 2, 3, 4],
+    y=[0.5, 0.7, 0.85, 0.90, 0.92],
+    xlabel="Iteration",
+    ylabel="Figure of Merit",
+    title="Optimization Progress"
+)
 ```
 
-## 📊 Key Features
+### 5. Log Files and Artifacts
 
-- **🔍 Real-time Monitoring**: Watch your simulations progress live
-- **📈 Automated Logging**: Metrics, parameters, and artifacts automatically tracked
-- **🎨 Rich Visualizations**: Interactive plots and data exploration
-- **🔗 Project Organization**: Group related simulations and compare results
-- **🤖 AI Insights**: Get suggestions for better designs and parameters
-- **📱 Web Dashboard**: Access your results from anywhere
+```python
+# Log arbitrary files
+run.log_file("simulation_script", "simulation.py")
+run.log_file("results_csv", "results.csv")
 
-## 🏗 Project Structure
-
-```
-OptixLog/
-├── examples/                 # All simulation examples
-│   ├── 01_quick_start.py
-│   ├── 02_simple_metrics.py
-│   ├── 03_artifact_upload.py
-│   ├── 04_absorbed_1d.py
-│   └── ...
-├── data/                     # Sample data files
-├── docs/                     # Additional documentation
-│   ├── api_reference.md
-│   ├── best_practices.md
-│   └── troubleshooting.md
-├── tests/                    # Test suite
-├── requirements.txt          # Python dependencies
-└── README.md                # This file
+# Log configuration updates
+run.add_config({"optimizer": "adam", "learning_rate": 0.001})
 ```
 
-## 🔑 Configuration
+## MPI-Aware Logging
+
+OptixLog automatically detects MPI environments and ensures only the master rank (rank 0) performs logging operations:
+
+```python
+from mpi4py import MPI
+from optixlog import Optixlog
+
+# This works seamlessly in MPI environments
+client = Optixlog()
+project = client.project("distributed_simulation")
+run = project.run("mpi_run")
+
+# Only rank 0 will actually log (other ranks return None)
+for step in range(1000):
+    # Your simulation code here
+    transmission = simulate_step(step)
+
+    # Safe to call from all ranks
+    run.log(step=step, transmission=transmission)
+```
+
+Supported MPI implementations:
+- OpenMPI
+- Intel MPI
+- MPICH
+- mpi4py
+
+## Advanced Usage
+
+### Context Manager
+
+```python
+with project.run("experiment_1", config={"param": 1.0}) as run:
+    for step in range(100):
+        metric = compute_metric(step)
+        run.log(step=step, metric=metric)
+    # Run automatically finalized
+```
+
+### Batch Logging
+
+```python
+# Efficient bulk operations
+batch_data = [
+    {"step": 0, "loss": 0.5},
+    {"step": 1, "loss": 0.4},
+    {"step": 2, "loss": 0.3},
+]
+result = run.log_batch(batch_data)
+print(f"Success rate: {result.success_rate}")
+```
+
+### Query and Compare Runs
+
+```python
+from optixlog.query import list_runs, get_run, compare_runs, get_metrics
+
+# List all runs in a project
+runs = list_runs(project_id="proj_123", api_key="your_key")
+
+# Get specific run details
+run_info = get_run(run_id="run_456", api_key="your_key")
+
+# Compare multiple runs
+comparison = compare_runs(
+    run_ids=["run_1", "run_2", "run_3"],
+    api_key="your_key"
+)
+
+# Get metrics for a run
+metrics = get_metrics(run_id="run_456", api_key="your_key")
+```
+
+### Download Artifacts
+
+```python
+from optixlog.query import download_artifact
+
+# Download logged files
+download_artifact(
+    run_id="run_456",
+    artifact_key="simulation_results",
+    save_path="./downloads/results.csv",
+    api_key="your_key"
+)
+```
+
+## API Reference
+
+### Core Classes
+
+#### `Optixlog`
+Main client for interacting with OptixLog API.
+
+**Methods:**
+- `project(name: str, project_id: str = None) -> Project` - Get or create a project
+
+#### `Project`
+Represents a project container for organizing runs.
+
+**Methods:**
+- `run(name: str = None, config: dict = None, run_id: str = None) -> Run` - Create or get a run
+
+#### `Run`
+Individual experiment run for logging metrics and artifacts.
+
+**Logging Methods:**
+- `log(step: int, **metrics) -> MetricResult` - Log scalar metrics
+- `log_config(config: dict) -> None` - Set run configuration
+- `add_config(config: dict) -> None` - Add to existing configuration
+- `log_image(key: str, image: PIL.Image) -> MediaResult` - Log PIL image
+- `log_file(key: str, file_path: str) -> MediaResult` - Log arbitrary file
+- `log_matplotlib(key: str, figure: matplotlib.Figure) -> MediaResult` - Log matplotlib figure
+- `log_plot(key: str, x: list, y: list, **kwargs) -> MediaResult` - Create and log plot
+- `log_array_as_image(key: str, array: np.ndarray, **kwargs) -> MediaResult` - Log numpy array as heatmap
+- `log_histogram(key: str, data: list, **kwargs) -> MediaResult` - Log histogram
+- `log_scatter(key: str, x: list, y: list, **kwargs) -> MediaResult` - Log scatter plot
+- `log_batch(operations: list) -> BatchResult` - Batch logging operations
+
+### Query Functions
+
+All query functions are available in `optixlog.query`:
+
+- `list_projects(api_key: str) -> List[ProjectInfo]`
+- `list_runs(project_id: str, api_key: str) -> List[RunInfo]`
+- `get_run(run_id: str, api_key: str) -> RunInfo`
+- `get_artifacts(run_id: str, api_key: str) -> List[ArtifactInfo]`
+- `download_artifact(run_id: str, artifact_key: str, save_path: str, api_key: str) -> str`
+- `get_metrics(run_id: str, api_key: str) -> List[dict]`
+- `compare_runs(run_ids: List[str], api_key: str) -> ComparisonResult`
+
+## Configuration
 
 ### Environment Variables
 
-```bash
-# Required
-export OPTIX_API_KEY="proj_your_api_key_here"
-export OPTIX_API_URL="https://optixlog.com"
+- `OPTIXLOG_API_KEY` - Your API key (alternative to passing directly)
+- `OPTIXLOG_API_URL` - Custom API endpoint (default: https://optixlog.com)
 
-# Optional
-export OPTIX_PROJECT="my_project_name"
-```
-
-### Configuration Files
-
-Create a `.env` file in your project root:
-
-```env
-OPTIX_API_KEY=proj_your_api_key_here
-OPTIX_API_URL=https://optixlog.com
-OPTIX_PROJECT=my_project_name
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### Adding New Examples
-
-1. **Fork the repository**
-2. **Create a new example** following the naming convention: `##_descriptive_name.py`
-3. **Add comprehensive documentation** with:
-   - Clear description of the physics
-   - Parameter explanations
-   - Expected results
-4. **Test thoroughly** with different parameter values
-5. **Submit a pull request**
-
-### Example Template
+### Custom API Endpoint
 
 ```python
-"""
-[Example Name] with OptixLog Integration
-
-Description: Brief description of what this simulation does
-Physics: Explanation of the underlying physics
-Usage: How to run and what parameters to adjust
-
-Author: Your Name
-Date: YYYY-MM-DD
-"""
-
-import optixlog
-import meep as mp
-import numpy as np
-
-def main():
-    # Initialize OptixLog
-    client = optixlog.init(
-        run_name="example_name",
-        config={
-            "parameter1": value1,
-            "parameter2": value2
-        }
-    )
-    
-    # Your simulation code here
-    # ...
-    
-    # Log results
-    client.log(metric1=value1, metric2=value2)
-
-if __name__ == "__main__":
-    main()
+client = Optixlog(
+    api_key="your_key",
+    api_url="https://your-custom-endpoint.com"
+)
 ```
 
-## 🐛 Troubleshooting
+## Error Handling
 
-### Common Issues
+OptixLog provides comprehensive validation and helpful error messages:
 
-**Q: Getting "Invalid URL" error?**
-A: Make sure your API key is set correctly: `export OPTIX_API_KEY="proj_your_key"`
+```python
+from optixlog.validators import ValidationError
 
-**Q: 500 Internal Server Error?**
-A: Check that your metrics don't contain NaN or Inf values
+try:
+    run.log(step=0, metric=float('nan'))  # NaN detection
+except ValidationError as e:
+    print(f"Validation error: {e}")
+```
 
-**Q: Can't upload files?**
-A: Ensure file paths are correct and files exist before uploading
+## Examples
 
-### Getting Help
+### FDTD Simulation with MEEP
 
-- 📧 **Email**: tanmayg@gatech.edu
-- 💬 **Issues**: [GitHub Issues](https://github.com/lemontang3/OptixLog/issues)
-- 📚 **Docs**: [OptixLog Documentation](https://optixlog.com/docs)
+```python
+import meep as mp
+from optixlog import Optixlog
 
-## 📄 License
+client = Optixlog()
+project = client.project("meep_photonic_crystal")
+run = project.run("defect_cavity", config={
+    "resolution": 20,
+    "dimensions": "2D",
+    "pml_layers": 1.0
+})
 
-This repository contains examples and educational content. Please check individual files for any licensing requirements.
+# Run MEEP simulation
+sim = mp.Simulation(...)
+for step in range(100):
+    sim.run(until=1)
 
-## 🙏 Acknowledgments
+    # Log field data
+    ez_data = sim.get_array(component=mp.Ez)
+    run.log_array_as_image(f"Ez_field_step_{step}", ez_data)
 
-- **Meep Team** for the excellent FDTD simulation framework
-- **Supabase** for the robust backend infrastructure
-- **Photonic Community** for inspiration and feedback
+    # Log metrics
+    energy = sim.electric_energy_in_box(...)
+    run.log(step=step, energy=energy)
+```
+
+### Tidy3D Integration
+
+```python
+import tidy3d as td
+from optixlog import Optixlog
+
+client = Optixlog()
+project = client.project("tidy3d_optimization")
+run = project.run("waveguide_bend", config={
+    "bend_radius": 5.0,
+    "wavelength": 1.55
+})
+
+# Run Tidy3D simulation
+sim = td.Simulation(...)
+sim_data = td.web.run(sim, task_name="bend_optimization")
+
+# Log results
+transmission = sim_data["transmission"].values
+run.log(step=0, transmission=float(transmission))
+run.log_file("simulation_data", "sim_data.hdf5")
+```
+
+## Testing
+
+Run the test suite:
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=optixlog --cov-report=html
+
+# Run specific test categories
+pytest -m unit
+pytest -m integration
+```
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## License
+
+This project is licensed under the GNU Lesser General Public License v2.1 - see the [LICENSE](LICENSE) file for details.
+
+This license allows:
+- Using OptixLog in both open source and proprietary projects
+- Linking to OptixLog without open sourcing your entire application
+- Modifying OptixLog (modifications must remain open source under LGPL)
+
+## Roadmap
+
+- [ ] Support for additional photonic simulation frameworks (Lumerical, COMSOL)
+- [ ] Real-time collaboration features
+- [ ] Advanced visualization dashboard
+- [ ] Automatic hyperparameter optimization integration
+- [ ] Cloud storage integration (S3, GCS)
+- [ ] Jupyter notebook extensions
+
+## Related Projects
+
+- [Tidy3D](https://github.com/flexcompute/tidy3d) - GPU-accelerated electromagnetic simulation (LGPL v2.1)
+- [MEEP](https://github.com/NanoComp/meep) - Free finite-difference time-domain simulation software
+- [MLflow](https://github.com/mlflow/mlflow) - Machine learning experiment tracking
+
+## Support
+
+- Documentation: [https://optixlog.com/docs](https://optixlog.com/docs)
+- Issues: [GitHub Issues](https://github.com/fluxboard/Optixlog/issues)
+- Community: [Discussions](https://github.com/fluxboard/Optixlog/discussions)
+
+## Citation
+
+If you use OptixLog in your research, please cite:
+
+```bibtex
+@software{optixlog2025,
+  title = {OptixLog: Experiment Tracking for Photonic Simulations},
+  author = {FluxBoard Team},
+  year = {2025},
+  url = {https://github.com/fluxboard/Optixlog}
+}
+```
+
+## Acknowledgments
+
+OptixLog is inspired by and builds upon ideas from:
+- Tidy3D's approach to photonic simulation
+- MLflow's experiment tracking paradigm
+- Weights & Biases' logging interface
 
 ---
 
-<div align="center">
-
-**Ready to supercharge your photonic simulations?** 🚀
-
-[Get Started](https://optixlog.com) • [Documentation](https://optixlog.com/docs) • [Examples](examples/)
-
-</div>
+Made with ⚡ by the FluxBoard team

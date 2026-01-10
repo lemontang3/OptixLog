@@ -28,8 +28,6 @@ share/python-wheels/
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -85,13 +83,9 @@ ipython_config.py
 .python-version
 
 # pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+Pipfile.lock
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+# PEP 582
 __pypackages__/
 
 # Celery stuff
@@ -128,42 +122,22 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Simulation output files
-*.h5
-*.csv
-*.png
-*.jpg
-*.jpeg
-*.pdf
-*.eps
-*.svg
-*.mp4
-*.avi
-*.mov
-
-# Meep output files
-*.out/
-*.dat
-*.vts
-*.vtu
-
-# Temporary files
-*.tmp
-*.temp
-*~
-
-# IDE files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS files
+*~
 .DS_Store
-Thumbs.db
 
-# Local configuration
-config.local.py
+# Project specific
+*.hdf5
+*.h5
+simulation_data/
+tmp/
+temp/
+
+# API keys and secrets
 .env.local
-
-
+secrets.json
+credentials.json
