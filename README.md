@@ -427,4 +427,4 @@ OptixLog is inspired by and builds upon ideas from:
 
 ---
 
-Made with ⚡ by the FluxBoard team
+Made with ⚡ by the Coupler team
